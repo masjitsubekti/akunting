@@ -2,4 +2,4 @@
 Akunting
 ###################
 
-Sistem Informasi Akunting
+Sistem Manajemen Keuangan
