@@ -1,5 +1,5 @@
 ###################
-E Commerce Furniture
+Akunting
 ###################
 
-Sistem Informasi E-Commerce Furniture (Mebel)
+Sistem Informasi Akunting
