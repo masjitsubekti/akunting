@@ -5,101 +5,115 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>E-commerce Furniture</title>
+  <title>Login | Akunting</title>
   <!-- plugins:css -->
   <link rel="shortcut icon" href="<?= base_url('assets/images/logo--.png') ?>" />
-  <link rel="stylesheet" href="<?= base_url('assets/vendors/feather/feather.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('assets/vendors/ti-icons/css/themify-icons.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('assets/vendors/css/vendor.bundle.base.css') ?>">
-  <link rel="stylesheet" href="<?= base_url('assets/css/vertical-layout-light/style.css') ?>">
   <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap.min.css') ?>">
   <link rel="stylesheet" type="text/css" href="<?= base_url('assets/all/sweetalert2/sweetalert2.min.css') ?>">
+  <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/styles.css')?>" />
+
+  <style>
+  .content-wrapper {
+    background: #F5F7FF;
+    padding: 1.5rem 1.5rem;
+    width: 100%;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+  }
+  </style>
 </head>
 
-<body>
-  <div class="container-scroller">
-    <div class="page-body-wrapper full-page-wrapper">
-      <div class="content-wrapper d-flex align-items-center auth px-0">
-        <div class="row w-100 mx-0">
-          <div class="col-lg-4 mx-auto">
-            <div class="auth-form-light text-left py-4 px-4 px-sm-5" style="border-top: 4px solid #8181c3;">
-              <div class="brand-logo text-center">
-                <h3 class="text-center">Login</h3>
+<body class="bg-primary">
+  <div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+      <main>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-5">
+              <br>
+              <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header">
+                  <h3 class="text-center font-weight-light my-3">Login</h3>
+                </div>
+                <div class="card-body" style="padding:20px !important;">
+                  <p class="font-weight-light mb-0" style="font-size:12pt;">Gunakan username / email dan password Anda
+                    untuk masuk ke dalam sistem!</p>
+                  <br>
+                  <form id="form-login" method="post">
+                    <div class="form-floating mb-3">
+                      <input class="form-control" id="username" name="username" type="text" placeholder="Username" />
+                      <label for="username">Username</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <input class="form-control" id="password" name="password" type="password"
+                        placeholder="Password" />
+                      <label for="password">Password</label>
+                    </div>
+                    <br>
+                    <div class="d-flex align-items-center justify-content-between mb-0">
+                      <a class="small" href="password.php">Lupa Password?</a>
+                      <button type="submit" class="btn btn-success">&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;</button>
+                    </div>
+                  </form>
+                  <br>
+                </div>
               </div>
-              <p class="font-weight-light mb-0" style="font-size:12pt;">Gunakan username / email dan password Anda untuk masuk ke dalam sistem!</p>
-              <form id="form_login" class="pt-3" method="POST">
-                <div class="form-group">
-                  <input type="text" class="form-control form-control-lg" name="username" id="username" placeholder="Username">
-                </div>
-                <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" name="password" id="password" placeholder="Password">
-                </div>
-                <div class="mt-3 mb-4">
-                  <button type="submit" class="btn btn-block btn-primary font-weight-medium">Login</button>
-                </div>
-                <div class="my-3 text-center">
-                  <!-- <a href="<?= site_url() ?>" class="auth-link text-black text-right">Home</a> -->
-                  <!-- <a href="javascript:;" class="auth-link text-black text-right">Lupa password?</a> -->
-                </div>
-                <div class="text-center mt-5 font-weight-light" style="font-size:15px;">
-                <a href="<?= site_url() ?>" class="auth-link text-black text-right">Home</a> |
-                  Belum punya akun? <a href="<?= site_url('Auth/register') ?>" class="text-primary">Register</a>
-                </div>
-              </form>
-            </div>
-            <div class="text-center mt-1">
-              <span class="text-muted text-sm-left d-block d-sm-inline-block" style="font-size:13px;">Copyright © 2022 Ecommerce Anggita Jaya</span> 
+              <div class="text-center mt-3">
+                <span class="text-sm-left d-block d-sm-inline-block" style="font-size:13px; color:#fff;">Copyright © 2022 Akunting</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- content-wrapper ends -->
+      </main>
     </div>
-    <!-- page-body-wrapper ends -->
   </div>
-  <!-- container-scroller -->
   <!-- plugins:js -->
-  <script src="<?= base_url('assets/vendors/js/vendor.bundle.base.js') ?>"></script>
+  <script src="<?= base_url('assets/js/jquery-3.6.0.min.js') ?>"></script>
   <script src="<?= base_url('assets/all/sweetalert2/sweetalert2.all.min.js') ?>"></script>
   <script>
-    var site_url = '<?= site_url() ?>';
-    var Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000
-    });
+  var site_url = '<?= site_url() ?>';
+  var Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  });
 
-    $('#form_login').submit(function (event) {
-        event.preventDefault();
-        $.ajax({
-          url: site_url + '/Auth/login',
-          method: 'POST',
-          dataType: 'json',	
-          data: new FormData($('#form_login')[0]),
-          async: true,
-          processData: false,
-          contentType: false,
-          success: function (data) {
-            if (data.success == true) {
-              Toast.fire({
-                icon: 'success',
-                title: data.message
-              });
+  $('#form-login').submit(function(event) {
+    event.preventDefault();
+    $.ajax({
+      url: site_url + '/Auth/login',
+      method: 'POST',
+      dataType: 'json',
+      data: new FormData($('#form-login')[0]),
+      async: true,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+        if (data.success == true) {
+          Toast.fire({
+            icon: 'success',
+            title: data.message
+          });
 
-              setTimeout(function(){ 
-                  window.location.href = site_url + data.page;
-              }, 1000);
-            } else {
-              Swal.fire({icon: 'error',title: 'Oops...',text: data.message});
-            }
-          },
-          fail: function (event) {
-            console.log(event);
-          }
-      });
-		  event.preventDefault();
+          setTimeout(function() {
+            window.location.href = site_url + data.page;
+          }, 1000);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: data.message
+          });
+        }
+      },
+      fail: function(event) {
+        console.log(event);
+      }
     });
+    event.preventDefault();
+  });
   </script>
 </body>
+
 </html>

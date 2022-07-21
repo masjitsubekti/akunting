@@ -32,17 +32,11 @@ class M_main extends CI_Model{
 	{
 		$this->db->insert($table, $obj);
 	}
+  
 	public function update($table,$data,$clm,$id)
 	{
 		$this->db->where($clm, $id);
 		$this->db->update($table, $data);
-	}
-
-	public function update_pass($tabel,$data,$where)
-	{
-		# code...
-		$edit_pass = $this->db->update($tabel,$data,$where);
-		return $edit_pass;
 	}
 
 	public function get_kode_master_v3($awal,$clm,$table){
