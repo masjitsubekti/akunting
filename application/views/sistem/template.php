@@ -9,7 +9,7 @@
   <!-- plugins:css -->
   <?php include('layouts/theme_css.php') ?>
 </head>
-<body>  
+<body class="sb-nav-fixed">  
   <!-- partial:header -->
   <?php include('layouts/theme_header.php') ?>
   <!-- partial:sidebar -->

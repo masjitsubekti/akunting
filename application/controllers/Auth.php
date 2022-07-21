@@ -57,7 +57,7 @@ class Auth extends CI_Controller {
           
               $response['success'] = true;
               $response['message'] = "Selamat Datang ".$data_login[0]->nama." !";
-              $response['page'] = ($data_login[0]->id_role=='PELANGGAN') ? '/' : '/Dashboard';
+              $response['page'] = '/Home';
             }else{
               //Akun Anda user salah
               $response['success'] = false;

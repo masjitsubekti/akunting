@@ -12,7 +12,6 @@ class Home extends CI_Controller {
   public function index()
   {
     $data['title'] = "Home | Akunting";
-
     $data['content'] = "home/index.php";    
     $this->parser->parse('sistem/template', $data);
   }

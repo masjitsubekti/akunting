@@ -49,22 +49,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'Home';
+$route['default_controller'] = 'Auth';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
 // Custome Route
 // Master Data
-$route['dashboard'] = 'Dashboard';
-$route['master/satuan'] = 'Satuan';
-$route['master/pelanggan'] = 'Pelanggan';
-$route['master/kategori-produk'] = 'Kategori';
-$route['master/produk'] = 'Produk';
-$route['master/jenis-produk'] = 'Jenis_produk';
+// $route['dashboard'] = 'Dashboard';
+// $route['master/satuan'] = 'Satuan';
+// $route['master/pelanggan'] = 'Pelanggan';
+// $route['master/kategori-produk'] = 'Kategori';
+// $route['master/produk'] = 'Produk';
+// $route['master/jenis-produk'] = 'Jenis_produk';
 
-// Laporan
-$route['laporan/penjualan'] = 'Laporan/penjualan';
-$route['laporan/product-terjual'] = 'Laporan/produk_terjual';
+// // Laporan
+// $route['laporan/penjualan'] = 'Laporan/penjualan';
+// $route['laporan/product-terjual'] = 'Laporan/produk_terjual';
 
-// Pengaturan
-$route['pengaturan/user'] = 'User';
+// // Pengaturan
+// $route['pengaturan/user'] = 'User';
