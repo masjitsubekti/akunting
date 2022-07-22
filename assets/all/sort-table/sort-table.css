@@ -4,8 +4,9 @@ th.sortable {
 }
 
 th.sortable::after {
-    font-family: 'FontAwesome';
+    font-family: "Font Awesome 5 Free";
     /* content: "\f0dc"; */
+    font-weight: 900;
     position: absolute;
     right: 8px;
     color: #333;

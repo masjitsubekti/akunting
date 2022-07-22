@@ -16,7 +16,7 @@
         </a>
         <div class="collapse" id="collapseMaster" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="javascript:;">Akun</a>
+            <a class="nav-link" href="<?= site_url('Akun') ?>">Akun</a>
           </nav>
         </div>
         <!-- Transaksi -->

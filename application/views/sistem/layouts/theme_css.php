@@ -1,14 +1,14 @@
 <link rel="shortcut icon" href="<?= base_url('assets/images/logo--.png') ?>" />
+<link rel="stylesheet" type="text/css" href="<?= base_url('assets/all/font-awesome/css/all.css')?>"/>
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/all/sort-table/sort-table.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/all/sweetalert2/sweetalert2.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?= base_url('assets/all/datepicker/bootstrap-datepicker3.min.css') ?>">
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/all/select2/select2.min.css')?>">
-<link rel="stylesheet" type="text/css" href="<?= base_url('assets/all/datatable/style.css')?>"/>
 <link rel="stylesheet" type="text/css" href="<?=base_url('assets/css/styles.css')?>"/>
+<!-- <link rel="stylesheet" type="text/css" href="<?= base_url('assets/all/datatable/style.css')?>"/> -->
 
 <!-- JS -->
-<script src="<?= base_url('assets/js/font-awesome/all.min.js')?>"></script>
-<script src="<?= base_url('assets/js/jquery-3.6.0.min.js') ?>"></script>
+<script src="<?= base_url('assets/js/vendor.bundle.base.js') ?>"></script>
 <script src="<?= base_url('assets/all/datepicker/bootstrap-datepicker.min.js') ?>"></script>
 <script src="<?=base_url('assets/all/select2/select2.min.js')?>"></script>
 
