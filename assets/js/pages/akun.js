@@ -51,39 +51,39 @@ function sort_table(id, column){
   pageLoad(1);
 }
 
-$('#btn-create').on('click', function() {
-    $.ajax({
-        url: site_url + "/Akun/load_modal",
-        type: 'POST',
-        data : {},
-        dataType: 'html',
-        beforeSend: function() {},
-        success: function(result) {
-            $('#div_modal').html(result);
-            $('#modalTitleAdd').show();
-            $('#modeform').val('ADD');
-            $('#formModal').modal('show');
-        }
-    });
-});
+// $('#btn-create').on('click', function() {
+//     $.ajax({
+//         url: site_url + "/Akun/load_modal",
+//         type: 'POST',
+//         data : {},
+//         dataType: 'html',
+//         beforeSend: function() {},
+//         success: function(result) {
+//             $('#div_modal').html(result);
+//             $('#modalTitleAdd').show();
+//             $('#modeform').val('ADD');
+//             $('#formModal').modal('show');
+//         }
+//     });
+// });
 
-$(document).on('click', '.btn-edit', function(event) {
-  event.preventDefault();
-  var id = $(this).attr('data-id');
-  $.ajax({
-    url: site_url + "/Akun/load_modal",
-    type: 'POST',
-    dataType: 'html',
-    data:{id:id},
-    beforeSend: function () {},
-    success: function (result) {    
-      $('#div_modal').html(result);
-      $('#modalTitleEdit').show();
-      $('#modeform').val('UPDATE');
-      $('#formModal').modal('show');
-    }
-  });
-});
+// $(document).on('click', '.btn-edit', function(event) {
+//   event.preventDefault();
+//   var id = $(this).attr('data-id');
+//   $.ajax({
+//     url: site_url + "/Akun/load_modal",
+//     type: 'POST',
+//     dataType: 'html',
+//     data:{id:id},
+//     beforeSend: function () {},
+//     success: function (result) {    
+//       $('#div_modal').html(result);
+//       $('#modalTitleEdit').show();
+//       $('#modeform').val('UPDATE');
+//       $('#formModal').modal('show');
+//     }
+//   });
+// });
 
 $(document).on('click', '.btn-delete', function(e) {
   var id = $(this).attr('data-id');
@@ -132,34 +132,4 @@ $(document).on('click', '.btn-delete', function(e) {
     allowOutsideClick: false
   });
   e.preventDefault();
-});
-
-$(document).on('submit', '#formData', function(event) {
-  event.preventDefault();
-  var modeform = $('#modeform').val();
-  var page = (modeform=='UPDATE') ? $('#hidden_page').val() : 1;
-  $.ajax({
-      url: site_url + "/Akun/save",
-      method: 'POST',
-      dataType: 'json',	
-      data: new FormData($('#formData')[0]),
-      async: true,
-      processData: false,
-      contentType: false,
-      success: function (data) {
-        if (data.success == true) {
-            Toast.fire({
-                icon: 'success',
-                title: data.message
-            });
-            $('#formModal').modal('hide');
-            pageLoad(page);
-        } else {
-            Swal.fire({icon: 'error',title: 'Oops...',text: data.message});
-        }
-      },
-      fail: function (event) {
-          alert(event);
-      }
-  });
 });

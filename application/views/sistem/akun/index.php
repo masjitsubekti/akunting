@@ -8,7 +8,7 @@
       <div class="card-body">
         <div class="row" style="padding-top:12px;">
           <div class="col-md-6">
-            <a href="javascript:;" class="btn btn-success mr-1 mb-1" id="btn-create"><i
+            <a href="<?= site_url('Akun/create') ?>" class="btn btn-success mr-1 mb-1" id="btn-create"><i
             class="fa fa-plus-circle"></i> &nbsp;Tambah</a>
           </div>
           <div class="col-md-2">
