@@ -17,7 +17,7 @@
         <th width="3%" class="text-center">No. </th>
         <th width="20%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','nama')">Nama </th>
         <th width="10%" class="sortable" id="column_kode" data-sort="" onclick="sort_table('#column_kode','kode')">Kode </th>
-        <th width="20%">Kelompok Akun </th>
+        <th width="20%" class="sortable" id="column_kelompok" data-sort="" onclick="sort_table('#column_kelompok','kelompok_akun')">Kelompok Akun </th>
         <th class="text-center" width="10%">Aksi</th>
       </tr>
       </thead>
@@ -30,7 +30,7 @@
             <td class="text-center"><?= $no ?>.</td>
             <td><?= $row->nama ?></td>
             <td><?= $row->kode ?></td>
-            <td></td>
+            <td><?= $row->nama_kelompok_akun ?></td>
             <td class="text-center">
               <a href="<?= site_url('Akun/edit/'.$row->id) ?>" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Tipe Hafalan"><i style="color:#fff;" class="fa fa-edit"></i></a>
               <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-danger btn-delete" data-toggle="tooltip" title="Hapus Tipe Hafalan"><i class="fa fa-trash"></i></a>	    

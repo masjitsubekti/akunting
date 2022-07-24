@@ -2,15 +2,21 @@
     defined('BASEPATH') OR exit('No direct script access allowed');
     class Akun_m extends CI_Model {
       private $table = 'acc_akun';
+      private $column_map = array(
+        'kode' => 'a.kode',
+        'nama' => 'a.nama',
+        'kelompok_akun' => 'ka.nama',
+        'created_at' => 'a.created_at',
+      );
 
       public function save($data)
       {
-        $this->db->insert($table, $data);
+        $this->db->insert($this->table, $data);
       }
       
       public function update($data, $where)
       {
-        $this->db->update($table, $data, $where);
+        $this->db->update($this->table, $data, $where);
       }
 
       function get_kelompok_akun()
@@ -22,21 +28,35 @@
       }
       
       function get_list_count($key="")
-      {
+      { 
           $query = $this->db->query("
-              select count(*) as jml from acc_akun 
-              where concat(kode, nama) like '%$key%' and status = '1'
+              SELECT count(*) as jml FROM acc_akun a
+              LEFT JOIN acc_kelompok_akun ka ON a.id_kelompok = ka.id 
+              WHERE concat(a.kode, a.nama, ka.nama) like '%$key%' and status = '1'
           ")->row_array();
           return $query;
       }
 
       function get_list_data($key="",  $limit="", $offset="", $column="", $sort="")
-      {
+      {   
+          $sortby = $this->column_map[$column];
           $query = $this->db->query("
-              select * from acc_akun
-              where concat(kode, nama) like '%$key%' and status = '1'
-              order by $column $sort
+              SELECT a.*, ka.nama AS nama_kelompok_akun FROM acc_akun a
+              LEFT JOIN acc_kelompok_akun ka ON a.id_kelompok = ka.id 
+              WHERE concat(a.kode, a.nama, ka.nama) like '%$key%' and status = '1'
+              order by $sortby $sort
               limit $limit offset $offset
+          ");
+          return $query;
+      }
+
+      function get_by_id($id)
+      {   
+          $query = $this->db->query("
+              SELECT a.*, ka.nama AS nama_kelompok_akun, aa.nama as nama_parent_akun FROM acc_akun a
+              LEFT JOIN acc_kelompok_akun ka ON a.id_kelompok = ka.id
+              LEFT JOIN acc_akun aa ON a.id_parent = aa.id 
+              WHERE a.id = '$id'
           ");
           return $query;
       }

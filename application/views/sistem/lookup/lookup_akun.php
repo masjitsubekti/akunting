@@ -59,28 +59,46 @@ $('#lookup_akun_cari').on('keypress', function(e) {
   }
 });
 
-function pageLoadAkun(i) {
+function pageLoadAkun(page=1) {
   var id_th = $('#lookup_akun_id_th').val();
   var column = $('#lookup_akun_column').val();
   var sort = $('#lookup_akun_sort').val();
   var limit = $('#lookup_akun_limit').val();
   var cari = $('#lookup_akun_cari').val();
   $.ajax({
-    url: "<?php echo site_url('Akun/get_data_lookup/')?>" + i,
-    type: 'post',
+    url: "<?= site_url('Akun/get_data_lookup')?>",
+    type: 'GET',
     dataType: 'html',
     data: {
-      limit: limit,
-      cari: cari,
-      column: column,
-      sort: sort,
+      page : page,
+      sortby : column,
+      sorttype : sort,
+      limit : limit,
+      search : cari,
       function_name: 'pageLoadAkun'
     },
     beforeSend: function() {},
     success: function(result) {
       $('#list_lookup_akun').html(result);
+      $('#hidden_page').val(page);
       sort_finish(id_th, sort);
     }
   });
+}
+
+function sort_table(id, column) {
+  var sort = $(id).attr("data-sort");
+  $('#lookup_akun_id_th').val(id);
+  $('#lookup_akun_column').val(column);
+
+  if (sort == "asc") {
+    sort = 'desc';
+  } else if (sort == "desc") {
+    sort = 'asc';
+  } else {
+    sort = 'asc';
+  }
+  $('#lookup_akun_sort').val(sort);
+  pageLoadAkun(1);
 }
 </script>

@@ -47,20 +47,22 @@ class Akun extends CI_Controller {
   public function edit($id){
     $data['title'] = 'Edit Akun | Akunting';
     $data['kelompok_akun'] = $this->Akun_m->get_kelompok_akun();
-    $data['data'] = $this->M_main->get_where('acc_akun','id',$id)->row_array();
+    $data['data'] = $this->Akun_m->get_by_id($id)->row_array();
     $data['content'] = "akun/form.php";    
-    $this->load->view('sistem/akun/form',$data);
+    $this->parser->parse('sistem/template', $data);
   }
 
   public function save(){
       $id = $this->input->post('id');
       $kode = strip_tags(trim($this->input->post('kode')));
       $nama = strip_tags(trim($this->input->post('nama')));
-      $id_kelompok = strip_tags(trim($this->input->post('id_kelompok')));
-      $id_parent = strip_tags(trim($this->input->post('id_parent')));
-      $keterangan = strip_tags(trim($this->input->post('katerangan')));
-      $aktif = strip_tags(trim($this->input->post('aktif')));
+      $id_kelompok = strip_tags(trim($this->input->post('kelompok_akun')));
+      $id_parent = ($this->input->post('id_parent')!="") ? $this->input->post('id_parent') : null;
+      $keterangan = strip_tags(trim($this->input->post('keterangan')));
+      $aktif = ($this->input->post('aktif')!="") ? $this->input->post('aktif') : '0';
+
       if($id!=""){
+          // Handle Update
           $data_object = array(
               'kode'=>$kode,
               'nama'=>$nama,
@@ -78,7 +80,10 @@ class Akun extends CI_Controller {
           $response['success'] = true;
           $response['message'] = "Data Berhasil Diubah !";     
       }else{
+          // Handle Save
+          $id_akun = $this->uuid->v4(false);
           $data_object = array(
+              'id'=>$id_akun,
               'kode'=>$kode,
               'nama'=>$nama,
               'keterangan'=>$keterangan,
@@ -101,9 +106,10 @@ class Akun extends CI_Controller {
     if($id){
       $object = array(
         'status' => '0', 
+        'updated_at'=>date('Y-m-d H:i:s')
       );
 
-      $this->Akun_m->update($data_object, array(
+      $this->Akun_m->update($object, array(
         'id' => $id
       )); 
       

@@ -11,25 +11,42 @@
           <input type="hidden" class="form-control" id="id" name="id"
             value="<?= isset($data) ? $data['id'] : '' ?>"></input>
           <div class="form-group mb-2">
-            <label for="kode" class="form-label">Kode</label>
+            <label for="kode" class="form-label">Kode*</label>
             <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode"
               value="<?= isset($data) ? $data['kode'] : '' ?>" required>
           </div>
           <div class="form-group mb-2">
-            <label for="nama" class="form-label">Nama</label>
+            <label for="nama" class="form-label">Nama*</label>
             <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
               value="<?= isset($data) ? $data['nama'] : '' ?>" required>
           </div>
           <div class="row">
             <div class="col-md-6">
+              <div class="form-group mb-2">
+                <label for="parent_akun" class="form-label">Sub dari akun</label>
+                <div class="input-group">
+                  <input type="hidden" id="id_parent" name="id_parent" class="form-control" value="<?= isset($data) ? $data['id_parent'] : '' ?>">
+                  <input type="text" id="parent_akun" name="parent_akun" class="form-control" placeholder="Akun"
+                    readonly value="<?= isset($data) ? $data['nama_parent_akun'] : '' ?>">
+                  <span id="clear_akun" class="input-group-text" style="cursor:pointer; display:none;"
+                    onclick="clearAkun()">
+                    <i class="fas fa-times"></i>
+                  </span>
+                  <span class="input-group-text" style="cursor:pointer;" onclick="lookupAkun()">
+                    <i class="fas fa-search"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
               <div class="form-group mb-2" id="select-kelompok">
-                <label for="kelompok_akun" class="form-label">Kelompok Akun</label>
+                <label for="kelompok_akun" class="form-label">Kelompok Akun*</label>
                 <select class="form-control" name="kelompok_akun" id="kelompok_akun" required>
                   <option value="">Pilih Kelompok</option>
                   <?php foreach ($kelompok_akun as $ka){ ?>
                   <option <?php 
                     if(isset($data)){
-                      if($data['id_kelompok_akun'] == $ka->id){
+                      if($data['id_kelompok'] == $ka->id){
                           echo 'selected';
                       }
                     }
@@ -39,22 +56,18 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group mb-2">
-                <label for="parent_akun" class="form-label">Sub dari akun</label>
-                <div class="input-group">
-                  <input type="text" id="search" name="search" class="form-control" placeholder="Akun" readonly>
-                  <span class="input-group-text" style="cursor:pointer;"  onclick="lookupAkun()">
-                    <i class="fas fa-search"></i>
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
           <div class="form-group mb-2">
             <label for="keterangan" class="form-label">Keterangan</label>
-            <textarea class="form-control" name="keterangan" id="keterangan"
+            <textarea class="form-control" name="keterangan" id="keterangan" placeholder="Keterangan (Opsional)"
               rows="2"><?= isset($data) ? $data['keterangan'] : '' ?></textarea>
+          </div>
+          <br>
+          <div class="form-check">
+            <input class="form-check-input" name="aktif" type="checkbox" value="1" id="flexCheckDefault" checked>
+            <label class="form-check-label" for="flexCheckDefault">
+              Aktif
+            </label>
           </div>
 
           <hr>
@@ -69,6 +82,12 @@
 </div>
 <div id="div_modal_lookup_akun"></div>
 <script>
+$("#kelompok_akun").select2({
+  placeholder: "Pilih Kelompok Akun",
+  allowClear: true,
+  dropdownParent: $("#select-kelompok")
+});
+
 function lookupAkun() {
   $.ajax({
     url: "<?= site_url('Akun/lookup_akun/')?>",
@@ -84,9 +103,16 @@ function lookupAkun() {
 
 function selectRowAkun(payload) {
   console.log("row akun selected", payload)
-  $('#kode_parent_akun').val(payload.kode)
-  $('#parent_akun').val(payload.nama)
+  $('#id_parent').val(payload.id)
+  $('#parent_akun').val(payload.kode + ' - ' + payload.nama)
   $('#modal_lookup_akun').modal('hide');
+  $('#clear_akun').show();
+}
+
+function clearAkun() {
+  $('#id_parent').val('')
+  $('#parent_akun').val('')
+  $('#clear_akun').hide();
 }
 
 $(document).on('submit', '#formData', function(event) {
