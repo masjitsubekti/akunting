@@ -151,6 +151,12 @@ class Akun extends CI_Controller {
 
     $this->load->view('sistem/lookup/data_akun', $data);
   }
+
+  public function get_akun_tree(){
+    $key	  = ($this->input->get("q") != "") ? strtoupper(quotes_to_entities($this->input->get("q"))) : "";
+    $data['list']      = $this->Akun_m->get_akun_tree($key);
+    $this->load->view('sistem/lookup/data_akun_tree', $data);
+  }
 }
 
 /* End of file Akun.php */

@@ -15,12 +15,12 @@
           <div class="col-12">
             <div class="row">
               <div class="col-md-2">
-                <select class="form-control" name="lookup_akun_limit" id="lookup_akun_limit" onchange="pageLoadBuku(1)">
+                <!-- <select class="form-control" name="lookup_akun_limit" id="lookup_akun_limit" onchange="pageLoadAkun()">
                   <option value="10" selected>10 Baris</option>
                   <option value="25">25 Baris</option>
                   <option value="50">50 Baris</option>
                   <option value="100">100 Baris</option>
-                </select>
+                </select> -->
               </div>
               <div class="col-md-6"></div>
               <div class="col-md-4">
@@ -38,9 +38,9 @@
           </div>
         </div>
         <!-- DATA SORT -->
-        <input type="hidden" name="lookup_akun_id_th" id="lookup_akun_id_th" value="#column_nama">
+        <!-- <input type="hidden" name="lookup_akun_id_th" id="lookup_akun_id_th" value="#column_nama">
         <input type="hidden" name="lookup_akun_column" id="lookup_akun_column" value="nama">
-        <input type="hidden" name="lookup_akun_sort" id="lookup_akun_sort" value="asc">
+        <input type="hidden" name="lookup_akun_sort" id="lookup_akun_sort" value="asc"> -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -50,55 +50,71 @@
 </div>
 <script>
 $(document).ready(function() {
-  pageLoadAkun(1)
+  pageLoadAkun()
 });
 
 $('#lookup_akun_cari').on('keypress', function(e) {
   if (e.which == 13) {
-    pageLoadAkun(1);
+    pageLoadAkun();
   }
 });
 
-function pageLoadAkun(page=1) {
-  var id_th = $('#lookup_akun_id_th').val();
-  var column = $('#lookup_akun_column').val();
-  var sort = $('#lookup_akun_sort').val();
-  var limit = $('#lookup_akun_limit').val();
-  var cari = $('#lookup_akun_cari').val();
+function pageLoadAkun() {
+  var search = $('#lookup_akun_cari').val();
   $.ajax({
-    url: "<?= site_url('Akun/get_data_lookup')?>",
+    url: "<?= site_url('Akun/get_akun_tree')?>",
     type: 'GET',
     dataType: 'html',
     data: {
-      page : page,
-      sortby : column,
-      sorttype : sort,
-      limit : limit,
-      search : cari,
-      function_name: 'pageLoadAkun'
+      q : search
     },
     beforeSend: function() {},
     success: function(result) {
       $('#list_lookup_akun').html(result);
-      $('#hidden_page').val(page);
-      sort_finish(id_th, sort);
     }
   });
 }
 
-function sort_table(id, column) {
-  var sort = $(id).attr("data-sort");
-  $('#lookup_akun_id_th').val(id);
-  $('#lookup_akun_column').val(column);
+// function pageLoadAkun(page=1) {
+//   var id_th = $('#lookup_akun_id_th').val();
+//   var column = $('#lookup_akun_column').val();
+//   var sort = $('#lookup_akun_sort').val();
+//   var limit = $('#lookup_akun_limit').val();
+//   var cari = $('#lookup_akun_cari').val();
+//   $.ajax({
+//     url: "<?= site_url('Akun/get_data_lookup')?>",
+//     type: 'GET',
+//     dataType: 'html',
+//     data: {
+//       page : page,
+//       sortby : column,
+//       sorttype : sort,
+//       limit : limit,
+//       search : cari,
+//       function_name: 'pageLoadAkun'
+//     },
+//     beforeSend: function() {},
+//     success: function(result) {
+//       $('#list_lookup_akun').html(result);
+//       $('#hidden_page').val(page);
+//       sort_finish(id_th, sort);
+//     }
+//   });
+// }
 
-  if (sort == "asc") {
-    sort = 'desc';
-  } else if (sort == "desc") {
-    sort = 'asc';
-  } else {
-    sort = 'asc';
-  }
-  $('#lookup_akun_sort').val(sort);
-  pageLoadAkun(1);
-}
+// function sort_table(id, column) {
+//   var sort = $(id).attr("data-sort");
+//   $('#lookup_akun_id_th').val(id);
+//   $('#lookup_akun_column').val(column);
+
+//   if (sort == "asc") {
+//     sort = 'desc';
+//   } else if (sort == "desc") {
+//     sort = 'asc';
+//   } else {
+//     sort = 'asc';
+//   }
+//   $('#lookup_akun_sort').val(sort);
+//   pageLoadAkun(1);
+// }
 </script>

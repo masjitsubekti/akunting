@@ -60,5 +60,14 @@
           ");
           return $query;
       }
+
+      function get_akun_tree($q)
+      {   
+          $query = $this->db->query(" 
+              SELECT * FROM vw_akun_tree
+              WHERE CONCAT(kode, nama, kelompok_akun) LIKE '%$q%'
+          ");
+          return $query;
+      }
     }
 ?>
