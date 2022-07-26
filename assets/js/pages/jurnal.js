@@ -15,7 +15,7 @@ function pageLoad(page=1) {
   var column_name = $('#hidden_column_name').val();
   var sort_type = $('#hidden_sort_type').val();
   $.ajax({
-    url: site_url + "/Akun/fetch_data",
+    url: site_url + "/Jurnal/fetch_data",
     type: 'GET',
     dataType: 'html',
     data: {
@@ -23,7 +23,7 @@ function pageLoad(page=1) {
       sortby : column_name,
       sorttype : sort_type,
       limit : limit,
-      search : search,
+      q : search,
     },
     beforeSend: function() {},
     success: function(result) {
@@ -71,7 +71,7 @@ $(document).on('click', '.btn-delete', function(e) {
         $.ajax({
           method: 'GET',
           dataType: 'json',
-          url: site_url + "/Akun/delete/" + id,
+          url: site_url + "/Jurnal/delete/" + id,
           data: {},
           success: function (data) {
             if (data.success === true) {
