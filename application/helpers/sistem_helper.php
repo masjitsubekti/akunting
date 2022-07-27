@@ -117,40 +117,6 @@ function kelamin($jenkel){
     }
 }
 
-// berfungsi untuk kirim email verifikasi atau aktivasi akun user setelah registrasi
-function api_register($id_user,$nama,$email){
-  $CI =& get_instance();
-  $config = [
-      'mailtype'  => 'html',
-      'charset'   => 'utf-8',
-      'protocol'  => 'smtp',
-      'smtp_host' => 'ssl://smtp.gmail.com',
-      'smtp_user' => $CI->apl['email_smtp'],
-      'smtp_pass' => $CI->apl['password_email_smtp'],
-      'smtp_port' => 465,
-      'crlf'      => "\r\n",
-      'newline'   => "\r\n"
-  ];
-
-  $CI->load->library('email', $config); 
-  $CI->email->from($CI->apl['email_smtp'], $CI->apl['nama_sistem']);
-  $CI->email->to($email);
-  // $CI->email->attach('url_file');
-  $CI->email->subject('Verifikasi Akun | '.$CI->apl['nama_sistem']);
-  $data['id_user'] = $id_user;
-  $data['nama'] = $nama;
-  // $data['root_apl'] = $CI->apl['url_root'];
-  $data['root_apl'] = site_url();
-  $body = $CI->load->view('auth/format-email',$data,TRUE);
-  $CI->email->message($body);
-  if ($CI->email->send()) {
-      $message = 'Sukses! email berhasil dikirim.';
-  } else {
-      $message =  'Error! email tidak dapat dikirim.';
-  }
-  return $message;
-}
-
 function tgl_indo($tanggal){
     $bulan = array (
         1 =>   'Januari',

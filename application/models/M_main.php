@@ -71,37 +71,22 @@ class M_main extends CI_Model{
         return $kodemax;
 	}
 
-  function get_no_otomatis_v3($tbl,$kolom,$awal){
-    $q = $this->db->query("SELECT MAX(RIGHT($kolom,3)) AS kd_max FROM $tbl WHERE DATE(created_at)=current_date");
+  function get_nomor_transaksi($awal, $kolom, $tbl){
+    $tanggal = date('Ym');
+    $tanggal2 = date('Y-m-d');
+    $q = $this->db->query("SELECT MAX(RIGHT($kolom,3)) AS kd_max FROM $tbl WHERE DATE(created_at)='$tanggal2'");
     $kd = "";
     if($q->num_rows()>0){
         $data = $q->row_array();
-        foreach($q->result() as $k){
-            $tmp = intval($k->kd_max)+1;
-            $kd = sprintf("%03s", $tmp);
-        }
+        $tmp = intval($data['kd_max'])+1;
+        $kd = sprintf("%03s", $tmp);
     }else{
         $kd = "001";
     }
-    date_default_timezone_set('Asia/Jakarta');
-    return $awal.date('dmY').$kd;
-  }
 
-	function get_no_otomatis_v4($tbl,$kolom,$awal){
-        $q = $this->db->query("SELECT MAX(RIGHT($kolom,4)) AS kd_max FROM $tbl WHERE DATE(created_at)=current_date");
-        $kd = "";
-        if($q->num_rows()>0){
-            $data = $q->row_array();
-            foreach($q->result() as $k){
-                $tmp = intval($k->kd_max)+1;
-                $kd = sprintf("%04s", $tmp);
-            }
-        }else{
-            $kd = "0001";
-        }
-        date_default_timezone_set('Asia/Jakarta');
-        return $awal.date('dmY').$kd;
-    }
+    $kodemax = $awal.$tanggal.$kd;
+    return $kodemax;
+  }
 }
 /* End of file M_main.php */
 /* Location: ./application/models/M_main.php */

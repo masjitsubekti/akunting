@@ -39,6 +39,7 @@ class Jurnal extends CI_Controller {
 
   public function create(){
     $data['title'] = 'Tambah Jurnal Umum | Akunting';
+    $data['modeform'] = "ADD";    
     $data['content'] = "jurnal/form.php";    
     $this->parser->parse('sistem/template', $data);
   }
@@ -46,57 +47,70 @@ class Jurnal extends CI_Controller {
   public function edit($id){
     $data['title'] = 'Edit Jurnal Umum | Akunting';
     $data['data'] = $this->Jurnal_m->get_by_id($id)->row_array();
+    $data['modeform'] = "UPDATE";
     $data['content'] = "jurnal/form.php";    
     $this->parser->parse('sistem/template', $data);
   }
 
   public function save(){
-      $id = $this->input->post('id');
-      $kode = strip_tags(trim($this->input->post('kode')));
-      $nama = strip_tags(trim($this->input->post('nama')));
-      $id_kelompok = strip_tags(trim($this->input->post('kelompok_akun')));
-      $id_parent = ($this->input->post('id_parent')!="") ? $this->input->post('id_parent') : null;
-      $keterangan = strip_tags(trim($this->input->post('keterangan')));
-      $aktif = ($this->input->post('aktif')!="") ? $this->input->post('aktif') : '0';
+      $no_transaksi =  $this->M_main->get_nomor_transaksi('JUM', 'nomor', 'acc_jurnal');
+      $tanggal = $this->input->post('tanggal');
+      $tanggal = format_date($tanggal, 'Y-m-d');
+      $keterangan = $this->input->post('keterangan');
 
-      if($id!=""){
-          // Handle Update
-          $data_object = array(
-              'kode'=>$kode,
-              'nama'=>$nama,
-              'keterangan'=>$keterangan,
-              'id_kelompok'=>$id_kelompok,
-              'id_parent'=>$id_parent,
-              'aktif'=>$aktif,
-              'updated_at'=>date('Y-m-d H:i:s')
+      // Details
+      $akun = $this->input->post('akun');
+      $uraian = $this->input->post('ket');
+      $debet = $this->input->post('debet');
+      $kredit = $this->input->post('kredit');
+
+      if(isset($akun)){
+        $jml = count($akun);
+        
+        $id = $this->uuid->v4(false);
+        $details = array();
+        $total = 0;
+        for ($i=0; $i < $jml; $i++) {
+          // Sum Total
+          $t_debet = ($debet[$i]!="") ? $debet[$i] : 0;
+          $total += $t_debet;
+          $details[] = array(
+              'id'         => $this->uuid->v4(false),
+              'id_jurnal'  => $id,
+              'id_akun'    => $akun[$i], 
+              'akun_kb'    => 0,
+              'debet'      => ($debet[$i]!="") ? $debet[$i] : 0,
+              'kredit'     => ($kredit[$i]!="") ? $kredit[$i] : 0,
+              'keterangan' => $uraian[$i],
+              'rate'       => 1,
+              'urut'       => $i+1,
           );
-      
-          $this->Akun_m->update($data_object, array(
-            'id' => $id
-          )); 
+        }
 
-          $response['success'] = true;
-          $response['message'] = "Data Berhasil Diubah !";     
+        $data_object = array(
+          'id'=>$id,
+          'nomor'=>$no_transaksi,
+          'tanggal'=>$tanggal,
+          'id_kelompok_jurnal'=>1, //Jurnal Umum
+          'keterangan'=>$keterangan,
+          'total'=>$total,
+          'multi_currency'=>1,
+          'status'=>'1',
+          'created_at'=>date('Y-m-d H:i:s')
+        );
+        
+        // Save Header
+        $this->Jurnal_m->save($data_object);
+        // Save Detail        
+        $this->db->insert_batch('acc_jurnal_detail', $details);
+  
+        $response['success'] = true;
+        $response['message'] = "Data berhasil disimpan";
       }else{
-          // Handle Save
-          $id_akun = $this->uuid->v4(false);
-          $data_object = array(
-              'id'=>$id_akun,
-              'kode'=>$kode,
-              'nama'=>$nama,
-              'keterangan'=>$keterangan,
-              'id_kelompok'=>$id_kelompok,
-              'id_mata_uang'=>'1',
-              'id_parent'=>$id_parent,
-              'expanded'=>'1',
-              'aktif'=>$aktif,
-              'status'=>'1',
-              'created_at'=>date('Y-m-d H:i:s')
-          );
-          $this->Akun_m->save($data_object);//insert untuk menambahkan data
-          $response['success'] = TRUE;
-          $response['message'] = "Data Berhasil Disimpan";
+        $response['success'] = false;
+        $response['message'] = "Rincian transaksi tidak boleh kosong !";
       }
+
       echo json_encode($response);   
   }
 
