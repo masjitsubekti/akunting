@@ -14,6 +14,8 @@ function pageLoad(page=1) {
   var id_th = $('#hidden_id_th').val();
   var column_name = $('#hidden_column_name').val();
   var sort_type = $('#hidden_sort_type').val();
+  var start_date = $('#startdate').val();
+  var end_date = $('#enddate').val();
   $.ajax({
     url: site_url + "/Jurnal/fetch_data",
     type: 'GET',
@@ -24,6 +26,8 @@ function pageLoad(page=1) {
       sorttype : sort_type,
       limit : limit,
       q : search,
+      startdate : start_date,
+      enddate : end_date,
     },
     beforeSend: function() {},
     success: function(result) {

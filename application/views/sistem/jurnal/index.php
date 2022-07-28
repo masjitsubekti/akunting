@@ -21,25 +21,21 @@
           </div>
           <div class="col-md-2">
             <div class="input-group">
-              <input class="form-control date-picker" id="tgl_awal" name="tgl_awal" data-date-format='dd-mm-yyyy'
+              <input class="form-control date-picker" id="startdate" name="startdate" data-date-format='dd-mm-yyyy'
               autocomplete="off" onchange="pageLoad(1)" onkeypress="return false;" value="<?= date('d-m-Y') ?>">
               <span class="input-group-text">
                 <i class="fas fa-calendar"></i>
               </span>
             </div>
-            <!-- <input class="form-control date-picker" id="tgl_awal" name="tgl_awal" data-date-format='dd-mm-yyyy'
-              autocomplete="off" onchange="pageLoad(1)" onkeypress="return false;" value="<?= date('d-m-Y') ?>"> -->
           </div>
           <div class="col-md-2">
             <div class="input-group">
-              <input class="form-control date-picker" id="tgl_akhir" name="tgl_akhir" data-date-format='dd-mm-yyyy'
+              <input class="form-control date-picker" id="enddate" name="enddate" data-date-format='dd-mm-yyyy'
               autocomplete="off" onchange="pageLoad(1)" onkeypress="return false;" value="<?= date('d-m-Y') ?>">
               <span class="input-group-text">
                 <i class="fas fa-calendar"></i>
               </span>
             </div>
-            <!-- <input class="form-control date-picker" id="tgl_akhir" name="tgl_akhir" data-date-format='dd-mm-yyyy'
-            autocomplete="off" onchange="pageLoad(1)" onkeypress="return false;" value="<?= date('d-m-Y') ?>"> -->
           </div>
           <div class="col-md-3"></div>
           <div class="col-md-4">

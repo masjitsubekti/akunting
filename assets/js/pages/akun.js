@@ -23,7 +23,7 @@ function pageLoad(page=1) {
       sortby : column_name,
       sorttype : sort_type,
       limit : limit,
-      search : search,
+      q : search,
     },
     beforeSend: function() {},
     success: function(result) {

@@ -185,6 +185,11 @@ function rupiah($angka, $prefix="Rp "){
 	return $hasil_rupiah;
 }
 
+function format_number($angka){	
+	$hasil_rupiah = number_format($angka,0,',','');
+	return $hasil_rupiah;
+}
+
 function format_date($date, $format="d-m-Y"){
   $time = strtotime($date);
   return date($format, $time);

@@ -20,7 +20,7 @@ class Akun extends CI_Controller {
   
   public function fetch_data(){
     $pg     = ($this->input->get("page") != "") ? $this->input->get("page") : 1;
-    $key	  = ($this->input->get("search") != "") ? strtoupper(quotes_to_entities($this->input->get("search"))) : "";
+    $key	  = ($this->input->get("q") != "") ? strtoupper(quotes_to_entities($this->input->get("q"))) : "";
     $limit	= $this->input->get("limit");
     $offset = ($limit*$pg)-$limit;
     $column = $this->input->get("sortby");

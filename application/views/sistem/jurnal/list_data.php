@@ -15,10 +15,10 @@
     <thead class="tr-head">
       <tr>
         <th width="3%" class="text-center">No. </th>
-        <th width="10%" class="sortable" id="column_nomor" data-sort="" onclick="sort_table('#column_nomor','no_bukti')">Nomor Bukti </th>
-        <th width="10%" class="sortable" id="column_tanggal" data-sort="" onclick="sort_table('#column_tanggal','tanggal')">Tanggal </th>
+        <th width="10%" class="sortable" id="column_nomor" data-sort="" onclick="sort_table('#column_nomor','nomor')">Nomor Bukti </th>
+        <th width="10%" class="sortable text-center" id="column_tanggal" data-sort="" onclick="sort_table('#column_tanggal','tanggal')">Tanggal </th>
         <th width="20%" class="sortable" id="column_keterangan" data-sort="" onclick="sort_table('#column_keterangan','keterangan')">Keterangan/Uraian </th>
-        <th width="10%">Total </th>
+        <th width="10%" class="text-end">Total (Rp)</th>
         <th class="text-center" width="10%">Aksi</th>
       </tr>
       </thead>
@@ -29,13 +29,13 @@
         foreach ($list->result() as $row) { $no++; ?>
           <tr>
             <td class="text-center"><?= $no ?>.</td>
-            <td><?= $row->no_bukti ?></td>
-            <td><?= $row->tanggal ?></td>
+            <td><?= $row->nomor ?></td>
+            <td class="text-center"><?= format_date($row->tanggal, 'd/m/Y') ?></td>
             <td><?= $row->keterangan ?></td>
-            <td><?= $row->total ?></td>
+            <td class="text-end"><?= rupiah($row->total, "") ?></td>
             <td class="text-center">
-              <a href="<?= site_url('Akun/edit/'.$row->id) ?>" data-id="<?=$row->id?>" data-name="<?=$row->no_bukti?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Tipe Hafalan"><i style="color:#fff;" class="fa fa-edit"></i></a>
-              <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->no_bukti?>" class="btn btn-sm btn-danger btn-delete" data-toggle="tooltip" title="Hapus Tipe Hafalan"><i class="fa fa-trash"></i></a>	    
+              <a href="<?= site_url('Jurnal/edit/'.$row->id) ?>" data-id="<?=$row->id?>" data-name="<?=$row->nomor?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Jurnal"><i style="color:#fff;" class="fa fa-edit"></i></a>
+              <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nomor?>" class="btn btn-sm btn-danger btn-delete" data-toggle="tooltip" title="Hapus Jurnal"><i class="fa fa-trash"></i></a>	    
             </td>
           </tr>
         <?php 

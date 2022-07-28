@@ -19,13 +19,13 @@
       </div>
       <div class="card-body">
         <form id="formData">
-          <input type="hidden" name="id" id="id" value="<?php (isset($data)) ?  $data['id'] : '' ?>">
+          <input type="hidden" name="id" id="id" value="<?= (isset($data)) ?  $data['id'] : '' ?>">
           <input type="hidden" name="modeform" id="modeform" value="<?= $modeform ?>">
           <div class="row mb-1">
             <label for="nomor_transaksi" class="col-sm-2 col-form-label">No Transaksi</label>
             <div class="col-sm-4">
-              <input type="text" class="form-control form-control" name="nomor_transaksi" id="nomor_transaksi"
-                value="<?php (isset($data)) ?  $data['nomor_transaksi'] : '' ?>" readonly>
+              <input type="text" class="form-control" name="nomor_transaksi" id="nomor_transaksi"
+                value="<?= (isset($data)) ?  $data['nomor'] : $nomor_transaksi ?>" readonly>
             </div>
           </div>
           <div class="row mb-1">
@@ -45,7 +45,7 @@
           <div class="row mb-1">
             <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
             <div class="col-sm-8">
-              <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="2" required></textarea>
+              <textarea class="form-control" name="keterangan" id="keterangan" cols="30" rows="2" placeholder="Keterangan" required><?= (isset($data)) ?  $data['keterangan'] : '' ?></textarea>
             </div>
           </div>
           <hr>
@@ -61,19 +61,26 @@
               </thead>
               <tbody>
                 <!-- Edit Rincian -->
-                <?php if (isset($data_detail)) {
-                  foreach ($data_detail as $row) { ?>
-                <!-- <tr>
-                      <td><input type='hidden' name='barang[]' class='form-control form-control-sm' value='{{ $row->id_barang }}'><b>[{{ $row->kode_barang }}]</b> {{ $row->nama_barang }}</td>
-                      <td><input type='text' name='qty[]' class='form-control form-control-sm qty' placeholder='Qty' value="{{ $row->jumlah }}" required></td>
-                      <td><input type='number' name='harga[]' class='form-control form-control-sm harga' value="{{ $row->harga }}" placeholder='Harga'></td>
-                      <td><input type='number' name='diskon[]' class='form-control form-control-sm diskon' value="{{ $row->diskon }}" placeholder='Diskon'></td>
-                      <td class='text-right'>
-                        <input type='hidden' class='form-control form-control-sm sub_total_hidden' value="">
-                        <span class='sub_total'></span>
-                      </td>
-                      <td class='text-center'><a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i class='fa fa-times-circle'></i></a></td>
-                    </tr> -->
+                <?php if (isset($details)) {
+                  foreach ($details as $row) { ?>
+                    <tr>
+                        <td>
+                          <input type='hidden' name='id_jurnal_detail[]' class='form-control' value='<?= $row->id ?>'>
+                          <input type='hidden' name='akun[]' class='form-control' value='<?= $row->id_akun ?>'><b>[<?= $row->kode_akun ?>] </b><?= $row->nama_akun ?>
+                        </td>
+                        <td style='padding:0px;'>
+                          <input type='text' name='ket[]' class='form-control ket' autocomplete='off' placeholder='Keterangan' value="<?= $row->keterangan ?>" required>
+                        </td>
+                        <td style='padding:0px;'>
+                          <input type='number' name='debet[]' class='form-control text-end debet' placeholder='0' value='<?= format_number($row->debet) ?>'>
+                        </td>
+                        <td style='padding:0px;'>
+                          <input type='number' name='kredit[]' class='form-control text-end kredit' placeholder='0' value='<?= format_number($row->kredit) ?>'>
+                        </td>
+                        <td style='padding:0px; vertical-align:middle;' class='text-center'>
+                          <a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i class='fa fa-times-circle'></i></a>
+                        </td>
+                    </tr>
                 <?php }} ?>
               </tbody>
               <tbody>
@@ -95,7 +102,7 @@
                 </tr>
               </tbody>
             </table>
-            <input type="hidden" id="jumlah-row" value="0">
+            <input type="hidden" id="jumlah-row" value="<?= (isset($details)) ?  count($details) : 0 ?>">
           </div>
           <hr>
           <div class="float-end">
@@ -112,7 +119,7 @@
 $(document).ready(function() {
   const modeform = $('#modeform').val()
   if (modeform == 'UPDATE') {
-    loadTotal()
+    calculateTotal()
   }
 })
 
@@ -138,31 +145,11 @@ function lookupAkun() {
   });
 };
 
-function validateRow(val) {
-  let table = document.getElementById("dataTableTransaksi");
-  let count = table.rows.length;
-  let result = false;
-  for (let i = 0; i < count; i++) {
-    if (i != 0) {
-      const el = table.rows[i].cells[0];
-      let cekInput = el.getElementsByTagName('input');
-      if (cekInput.length > 0) {
-        let input = cekInput[0].value;
-        if (input == val) {
-          result = true;
-          break;
-        }
-      }
-    }
-  }
-  return result;
-}
-
 function addRows(val) {
   let jumlah = parseInt($("#jumlah-row").val()) + 1;
   let data = "<tr>" +
-    "<td><input type='hidden' name='akun[]' class='form-control' value='" + val.id + "'>" + "<b>[" + val
-    .kode + "]</b> " + val.nama + "</td>" +
+    "<td><input type='hidden' name='id_jurnal_detail[]' class='form-control' value=''>" +
+    "<input type='hidden' name='akun[]' class='form-control' value='" + val.id + "'>" + "<b>[" + val.kode + "]</b> " + val.nama + "</td>" +
     "<td style='padding:0px;'><input type='text' name='ket[]' class='form-control ket' autocomplete='off' placeholder='Keterangan' required></td>" +
     "<td style='padding:0px;'><input type='number' name='debet[]' class='form-control text-end debet' placeholder='0'></td>" +
     "<td style='padding:0px;'><input type='number' name='kredit[]' class='form-control text-end kredit' placeholder='0'></td>" +
@@ -179,7 +166,7 @@ function deleteRow(r) {
   var i = r.parentNode.parentNode.rowIndex;
   document.getElementById("dataTableTransaksi").deleteRow(i);
   $("#jumlah-row").val(moverow);
-  calculateGrandTotal()
+  calculateTotal();
 }
 
 $(document).on('input', ".debet", function() {
@@ -191,18 +178,6 @@ $(document).on('input', ".kredit", function() {
   const self = $(this);
   calculateTotal();
 });
-
-function loadTotal() {
-  $("#dataTableTransaksi tr").each(function() {
-    let qty = parseFloat($(this).find(".qty").val() || 0);
-    let harga = parseFloat($(this).find(".harga").val() || 0);
-    let diskon = parseInt($(this).find(".diskon").val() || 0);
-    let total = (qty * harga) - diskon;
-    $(this).find(".sub_total_hidden").val(total);
-    $(this).find(".sub_total").text(formatNumber(total));
-  });
-  calculateGrandTotal()
-}
 
 function calculateTotal() {
   var debet = 0;
@@ -285,7 +260,7 @@ $(document).on('submit', '#formData', function(event) {
 
               $("#loading").removeClass("fa fa-spinner fa-spin");
               $('#btn-save').prop('disabled', false)
-              // window.location.href = site_url + "/jurnal";
+              window.location.href = site_url + "/Jurnal";
             }, 1000);
           } else {
             $("#loading").removeClass("fa fa-spinner fa-spin");
