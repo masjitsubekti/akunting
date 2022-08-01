@@ -1,6 +1,6 @@
-<!-- <style>
+<style>
    .datepicker {z-index:1200 !important;}  
-</style>     -->
+</style>    
 <div class="row">
   <div class="col-12">
     <div class="card mt-4">
@@ -131,7 +131,6 @@
 <script>
 $('.date-picker').datepicker({
   autoclose: true,
-  orientation: "bottom"
 })
 $('.date-picker').datepicker('setDate', new Date());
 
