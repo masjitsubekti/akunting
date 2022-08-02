@@ -27,7 +27,7 @@
 
   .body-table td,
   th {
-    padding: 5px;
+    padding: 4px;
     border: 1px solid black;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 11px;
@@ -83,53 +83,55 @@
     </table>
     <hr class="line-title">
     <hr class="line-title-child">
-    <br>
     <?php 
         $total = 0;
         if(count($report)>0){
         foreach ($report as $row) { 
     ?>
-    <table class="table">
+    <table class="table" style="margin-top:30px;">
       <thead class="head-table">
         <tr>
-          <th rowspan="2" width="10%" class="text-center">Tanggal</th>
+          <th rowspan="2" width="9%" class="text-center">Tanggal</th>
           <th rowspan="2" width="10%" class="text-center">Nomor Jurnal</th>
           <th rowspan="2" width="40%">Keterangan</th>
-          <th colspan="3" width="30%" class="text-center">Jumlah (Rp.)</th>
+          <th colspan="3" width="33%" class="text-center">Jumlah (Rp.)</th>
         </tr>
         <tr>
-          <th width="10%">Debet</th>
-          <th width="10%">Kredit</th>
-          <th width="10%">Saldo</th>
+          <th width="11%">Debet</th>
+          <th width="11%">Kredit</th>
+          <th width="11%">Saldo</th>
         </tr>
       </thead>
       <tbody class="body-table">
         <tr>
-          <td colspan="3"><?= $row->nama_akun ?></td>
+          <td colspan="3" style="border-right: 1px solid #fff !important;"><?= $row->nama_akun ?></td>
           <td colspan="2" class="text-right">Saldo Awal</td>
-          <td class="text-right"><?= $row->saldo_awal ?></td>
+          <td class="text-right"><?= format_number($row->saldo_awal) ?></td>
         </tr>
         <?php 
-          foreach ($row->details as $d) { 
+          $index2 = 0;
+          foreach ($row->details as $d) {
+          $style=($index2 != count($row->details)-1) ? "border-bottom: 1px solid #fff" : ""; 
         ?>
         <tr>
-          <td class="text-center"><?= format_date($d->tanggal, 'd/m/Y') ?></td>
-          <td><?= $d->nomor ?></td>
-          <td><?= $d->keterangan ?></td>
-          <td class="text-right"><?= rupiah($d->debet, "") ?></td>
-          <td class="text-right"><?= rupiah($d->kredit, "") ?></td>
-          <td class="text-right"><?= rupiah($d->saldo, "") ?></td>
+          <td style="<?= $style ?>"><?= format_date($d->tanggal, 'd/m/Y') ?></td>
+          <td style="<?= $style ?>"><?= $d->nomor ?></td>
+          <td style="<?= $style ?>"><?= $d->keterangan ?></td>
+          <td style="<?= $style ?>" class="text-right"><?= format_number($d->debet) ?></td>
+          <td style="<?= $style ?>" class="text-right"><?= format_number($d->kredit) ?></td>
+          <td style="<?= $style ?>" class="text-right"><?= format_number($d->saldo) ?></td>
         </tr>
-        <?php } ?>
+        <?php 
+          $index2++;
+        } ?>
         <tr>
           <td colspan="3" class="text-right"><b>TOTAL</b></td>
-          <td class="text-right"><b>0</b></td>
-          <td class="text-right"><b>0</b></td>
-          <td class="text-right"><b>0</b></td>
+          <td class="text-right"><b><?= format_number($row->total_debet) ?></b></td>
+          <td class="text-right"><b><?= format_number($row->total_kredit) ?></b></td>
+          <td class="text-right"></td>
         </tr>
       </tbody>
     </table>
-    <br>
     <?php }}else{ ?>
     <!-- No Action -->
     <?php } ?>

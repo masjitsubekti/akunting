@@ -186,8 +186,12 @@ function rupiah($angka, $prefix="Rp "){
 }
 
 function format_number($angka){	
-	$hasil_rupiah = number_format($angka,0,',','');
-	return $hasil_rupiah;
+  if($angka<0){
+    $hasil = '('. number_format(abs($angka),0,',','.') .')';
+  }else{
+    $hasil = number_format($angka,0,',','.');
+  }
+	return $hasil;
 }
 
 function format_date($date, $format="d-m-Y"){

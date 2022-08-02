@@ -45,11 +45,15 @@ class Report extends CI_Controller {
     $result = array();
     $index = 0;
     foreach ($group as $key => $value) {
-
       $saldo_awal = 0;
+      $total_debet = 0;
+      $total_kredit = 0;
       $details = array();
       $saldo_awal = (count($value)>0) ? $value[0]->saldo_awal : 0;
-      for ($i=0; $i<count($value); $i++) { 
+      for ($i=0; $i<count($value); $i++) {
+        $total_debet += $value[$i]->debet;
+        $total_kredit += $value[$i]->kredit;
+        
         $details [] = (object) array(
           "kode"=> $value[$i]->kode,
           "nama_akun"=> $value[$i]->nama_akun,
@@ -66,6 +70,8 @@ class Report extends CI_Controller {
       $result [] = (object) array(
         "nama_akun" => $key, 
         "saldo_awal" => $saldo_awal, 
+        "total_debet" => $total_debet, 
+        "total_kredit" => $total_kredit, 
         "details" => $details, 
       );
 
