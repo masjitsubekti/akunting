@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title><?=$title?></title>
   <style>
@@ -20,9 +21,9 @@
   .body-table td,
   th {
     padding: 4px;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 11px;
+    font-size: 12px;
   }
 
   .head-lap td {
@@ -59,14 +60,21 @@
   }
   </style>
 </head>
-
 <body>
+  <!-- 
+  Catatan : 
+  idDet = False -> nominal disebelah kiri
+  idDet = true -> nominal disebelah kanan
+  idParent = null -> Header
+  idParent = not null -> Sub 
+  -->
+
   <div style="margin:-20px;">
     <table class="table" style="text-align:left;">
       <tbody class="head-lap">
         <tr>
           <td width="100%" class="text-center">
-            <span style="font-size:15px">LAPORAN BUKU BESAR</span> <br>
+            <span style="font-size:15px">LAPORAN LABA RUGI</span> <br>
             <span style="font-size:12px;">Tanggal : <?= format_date($tanggal_awal, 'd/m/Y') ?> s/d
               <?= format_date($tanggal_akhir, 'd/m/Y') ?></span> <br>
           </td>
@@ -76,55 +84,44 @@
     <hr class="line-title">
     <hr class="line-title-child">
     <?php 
-        $total = 0;
-        if(count($report)>0){
-        foreach ($report as $row) { 
-    ?>
+      $total = 0;
+      if(count($report)>0){ ?>
     <table class="table" style="margin-top:30px;">
-      <thead class="head-table">
-        <tr>
-          <th rowspan="2" width="9%" class="text-center">Tanggal</th>
-          <th rowspan="2" width="10%" class="text-center">Nomor Jurnal</th>
-          <th rowspan="2" width="40%">Keterangan</th>
-          <th colspan="3" width="33%" class="text-center">Jumlah (Rp.)</th>
-        </tr>
-        <tr>
-          <th width="11%">Debet</th>
-          <th width="11%">Kredit</th>
-          <th width="11%">Saldo</th>
-        </tr>
-      </thead>
       <tbody class="body-table">
         <tr>
-          <td colspan="3" style="border-right: 1px solid #fff !important;"><?= $row->nama_akun ?></td>
-          <td colspan="2" class="text-right">Saldo Awal</td>
-          <td class="text-right"><?= format_number($row->saldo_awal) ?></td>
+          <td colspan="3" style="color:blue;">Laba-Rugi</td>
+        </tr>
+        <?php foreach ($report as $row) { ?>
+        <tr>
+          <td style="width:60%; padding-left:15px;"><?= $row->kelompok_akun ?></td>
+          <td style="width:20%;"></td>
+          <td style="width:20%;"></td>
         </tr>
         <?php 
           $index2 = 0;
           foreach ($row->details as $d) {
-          $style=($index2 != count($row->details)-1) ? "border-bottom: 1px solid #fff" : ""; 
+          $path = explode(">", $d->path);
+          $tree = (count($path)>1) ? (count($path)+1) * 15 : 30;
         ?>
         <tr>
-          <td style="<?= $style ?>"><?= format_date($d->tanggal, 'd/m/Y') ?></td>
-          <td style="<?= $style ?>"><?= $d->nomor ?></td>
-          <td style="<?= $style ?>"><?= $d->keterangan ?></td>
-          <td style="<?= $style ?>" class="text-right"><?= format_number($d->debet) ?></td>
-          <td style="<?= $style ?>" class="text-right"><?= format_number($d->kredit) ?></td>
-          <td style="<?= $style ?>" class="text-right"><?= format_number($d->saldo) ?></td>
+          <td style="padding-left:<?= $tree ?>px;"><?= $d->nama ?></td>
+          <td class="text-right"><?= ($d->is_det==0) ? format_number($d->total) : '' ?></td>
+          <td class="text-right"><?= ($d->is_det==1) ? format_number($d->total) : '' ?></td>
         </tr>
         <?php 
           $index2++;
         } ?>
         <tr>
-          <td colspan="3" class="text-right"><b>TOTAL</b></td>
-          <td class="text-right"><b><?= format_number($row->total_debet) ?></b></td>
-          <td class="text-right"><b><?= format_number($row->total_kredit) ?></b></td>
-          <td class="text-right"></td>
+          <td></td>
+          <td class="text-right"><b>Total <?= $d->kelompok_akun ?> : &nbsp;</b></td>
+          <td style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
+            0
+          </td>
         </tr>
+        <?php } ?>
       </tbody>
     </table>
-    <?php }}else{ ?>
+    <?php }else{ ?>
     <!-- No Action -->
     <?php } ?>
   </div>

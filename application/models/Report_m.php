@@ -11,5 +11,15 @@
           $query = $this->db->query("CALL fn_report_buku_besar('$tgl_awal', '$tgl_akhir', '$nomor_akun', '$hidden_nol')");
           return $query;
       }
+
+      function get_report_laba_rugi($filter=array())
+      {   
+          $tgl_awal = $filter['tanggal_awal'];
+          $tgl_akhir = $filter['tanggal_akhir'];
+          $hidden_nol = $filter['hidden_nol'];
+
+          $query = $this->db->query("CALL fn_report_laba_rugi('$tgl_awal', '$tgl_akhir', '$hidden_nol')");
+          return $query;
+      }
     }
 ?>
