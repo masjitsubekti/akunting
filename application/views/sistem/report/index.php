@@ -16,6 +16,7 @@
               <option value="1">Laporan Buku Besar</option>
               <option value="2">Laporan Laba Rugi</option>
               <option value="3">Laporan Posisi Keuangan</option>
+              <option value="4">Laporan Neraca Saldo</option>
             </select>
           </div>
         </div>
@@ -181,6 +182,9 @@ function printReport() {
       rentangTanggal.tglAkhir;
   } else if (jenis_lap == '3') {
     link = "<?= site_url('Report/posisi_keuangan') ?>" + "?tanggal_awal=" + rentangTanggal.tglAwal +
+      "&tanggal_akhir=" + rentangTanggal.tglAkhir;
+  } else if (jenis_lap == '4') {
+    link = "<?= site_url('Report/neraca_saldo') ?>" + "?tanggal_awal=" + rentangTanggal.tglAwal +
       "&tanggal_akhir=" + rentangTanggal.tglAkhir;
   } else {
     link = "";

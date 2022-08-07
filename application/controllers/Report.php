@@ -95,7 +95,7 @@ class Report extends CI_Controller {
     $filter = array(
       'tanggal_awal' => format_date($tanggal_awal, 'Y-m-d'),
       'tanggal_akhir' => format_date($tanggal_akhir, 'Y-m-d'),
-      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "1",
+      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "0",
     );
 
     $report = $this->Report_m->get_report_laba_rugi($filter)->result();
@@ -151,6 +151,52 @@ class Report extends CI_Controller {
     $this->pdf->setPaper('A4', 'potrait');
     $this->pdf->filename = "Laporan Laba Rugi.pdf";
     $this->pdf->load_view('sistem/report/cetak_laporan_laba_rugi.php', $data);
+  }
+
+  public function neraca_saldo() {
+    $data['title'] = "Laporan Neraca Percobaan (Saldo)"; 
+    $tanggal_awal = $this->input->get("tanggal_awal");
+    $tanggal_akhir = $this->input->get("tanggal_akhir");
+    
+    $filter = array(
+      'tanggal_awal' => format_date($tanggal_awal, 'Y-m-d'),
+      'tanggal_akhir' => format_date($tanggal_akhir, 'Y-m-d'),
+      'nomor_akun' => ($this->input->get("nomor_akun")!="") ? $this->input->get("nomor_akun") : "",
+      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "1",
+    );
+
+    $report = $this->Report_m->get_report_neraca_saldo($filter)->result();
+    $data['tanggal_awal'] = $tanggal_awal;
+    $data['tanggal_akhir'] = $tanggal_akhir;
+
+    $saw_debit = 0;
+    $saw_kredit = 0;
+    $mut_debit = 0;
+    $mut_kredit = 0;
+    $sak_debit = 0;
+    $sak_kredit = 0;
+    
+    foreach ($report as $row) {
+      $saw_debit += $row->saldo_awal_debit;
+      $saw_kredit += $row->saldo_awal_kredit;
+      $mut_debit += $row->mutasi_debit;
+      $mut_kredit += $row->mutasi_kredit;
+      $sak_debit += $row->saldo_akhir_debit;
+      $sak_kredit += $row->saldo_akhir_kredit;
+    }
+    
+    $data['report'] = $report;
+    $data['saw_debit'] = $saw_debit;
+    $data['saw_kredit'] = $saw_kredit;
+    $data['mut_debit'] = $mut_debit;
+    $data['mut_kredit'] = $mut_kredit;
+    $data['sak_debit'] = $sak_debit;
+    $data['sak_kredit'] = $sak_kredit;
+    // echo json_encode($report);
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "Laporan Neraca Percobaan (Saldo).pdf";
+    $this->pdf->load_view('sistem/report/cetak_laporan_neraca_saldo.php', $data);
   }
 }
 
