@@ -27,7 +27,7 @@ class Report extends CI_Controller {
       'tanggal_awal' => format_date($tanggal_awal, 'Y-m-d'),
       'tanggal_akhir' => format_date($tanggal_akhir, 'Y-m-d'),
       'nomor_akun' => ($this->input->get("nomor_akun")!="") ? $this->input->get("nomor_akun") : "",
-      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "1",
+      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "0",
     );
 
     $report = $this->Report_m->get_report_buku_besar($filter)->result();
@@ -197,6 +197,76 @@ class Report extends CI_Controller {
     $this->pdf->setPaper('A4', 'potrait');
     $this->pdf->filename = "Laporan Neraca Percobaan (Saldo).pdf";
     $this->pdf->load_view('sistem/report/cetak_laporan_neraca_saldo.php', $data);
+  }
+
+  public function posisi_keuangan() {
+    // Laporan Neraca Detail
+    $data['title'] = "Laporan Posisi Keuangan"; 
+    $tanggal_awal = $this->input->get("tanggal_awal");
+    $tanggal_akhir = $this->input->get("tanggal_akhir");
+    
+    $filter = array(
+      'tanggal_awal' => format_date($tanggal_awal, 'Y-m-d'),
+      'tanggal_akhir' => format_date($tanggal_akhir, 'Y-m-d'),
+      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "0",
+    );
+
+    $report = $this->Report_m->get_report_neraca_detail($filter)->result();
+    $data['tanggal_awal'] = $tanggal_awal;
+    $data['tanggal_akhir'] = $tanggal_akhir;
+    
+    $group = array();
+    // Group key
+    foreach ($report as $row) {
+      $key = $row->kelompok_neraca;
+      $group [$key][$row->kelompok_akun_tree][] = $row;
+    }
+
+    $result = array();
+    foreach ($group as $key => $value) {
+      $total_kelompok_neraca = 0;
+      $kelompok = array();
+      foreach ($value as $kelompok_key => $kelompok_value) {
+        $total_kelompok_akun = 0;
+        // Get total
+        $details = array();
+        for ($i=0; $i<count($kelompok_value); $i++) { 
+          // Jika sama dengan kelompok akun
+          if($kelompok_key!=$kelompok_value[$i]->nama){
+            $total_kelompok_neraca += $kelompok_value[$i]->total;
+            $total_kelompok_akun += $kelompok_value[$i]->total;
+
+            $details [] = (object) array(
+              "grup" => $kelompok_value[$i]->grup,
+              "kelompok_neraca" =>  $kelompok_value[$i]->kelompok_neraca,
+              "kelompok_akun" => $kelompok_value[$i]->kelompok_akun_tree,
+              "kode" =>  $kelompok_value[$i]->kode,
+              "nama" => $kelompok_value[$i]->nama,
+              "total" => $kelompok_value[$i]->total,
+            );
+          }
+        }
+
+        $kelompok [] = (object) array(
+          "kelompok_akun" => $kelompok_key, 
+          "total" => $total_kelompok_akun,
+          "details" => $details 
+        );
+      }
+
+      $result [] = (object) array(
+        "kelompok_neraca" => $key,
+        "kelompok_akun" => $kelompok, 
+        "total" => $total_kelompok_neraca 
+      );
+    }
+
+    // echo json_encode($result);
+    $data['report'] = $result;
+    $this->load->library('pdf');
+    $this->pdf->setPaper('A4', 'potrait');
+    $this->pdf->filename = "Laporan Posisi Keuangan.pdf";
+    $this->pdf->load_view('sistem/report/cetak_laporan_posisi_keuangan.php', $data);
   }
 }
 

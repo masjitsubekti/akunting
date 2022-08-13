@@ -72,10 +72,10 @@
                           <input type='text' name='ket[]' class='form-control ket' autocomplete='off' placeholder='Keterangan' value="<?= $row->keterangan ?>" required>
                         </td>
                         <td style='padding:0px;'>
-                          <input type='number' name='debet[]' class='form-control text-end debet' placeholder='0' value='<?= format_number($row->debet) ?>'>
+                          <input type='number' name='debet[]' class='form-control text-end debet' placeholder='0' value='<?= floatval($row->debet) ?>'>
                         </td>
                         <td style='padding:0px;'>
-                          <input type='number' name='kredit[]' class='form-control text-end kredit' placeholder='0' value='<?= format_number($row->kredit) ?>'>
+                          <input type='number' name='kredit[]' class='form-control text-end kredit' placeholder='0' value='<?= floatval($row->kredit) ?>'>
                         </td>
                         <td style='padding:0px; vertical-align:middle;' class='text-center'>
                           <a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i class='fa fa-times-circle'></i></a>

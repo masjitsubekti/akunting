@@ -31,5 +31,15 @@
           $query = $this->db->query("CALL fn_report_neraca_saldo('$tgl_awal', '$tgl_akhir', '$hidden_nol')");
           return $query;
       }
+
+      function get_report_neraca_detail($filter=array())
+      {   
+          $tgl_awal = $filter['tanggal_awal'];
+          $tgl_akhir = $filter['tanggal_akhir'];
+          $hidden_nol = $filter['hidden_nol'];
+
+          $query = $this->db->query("CALL fn_report_neraca_rekap('$tgl_awal', '$tgl_akhir', '$hidden_nol')");
+          return $query;
+      }
     }
 ?>

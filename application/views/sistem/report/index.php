@@ -109,8 +109,8 @@
 
               <!-- Sembunyikan nilai nol -->
               <div class="form-check mt-4">
-                <input class="form-check-input" type="checkbox" value="1" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
+                <input class="form-check-input" type="checkbox" value="1" id="checkHiddenNol">
+                <label class="form-check-label" for="checkHiddenNol">
                   Sembunyikan detail yang bernilai 0 (Nol)
                 </label>
               </div>
@@ -151,6 +151,7 @@ function printReport() {
   const tahunan = $('#tahunan').val();
   const jenis_lap = $('#jenis_laporan').val();
   const barang = $('#barang').val();
+  var hiddenNol = document.getElementById("checkHiddenNol")
   var link = ""
 
   if (jenis_lap == "") {
@@ -188,6 +189,11 @@ function printReport() {
       "&tanggal_akhir=" + rentangTanggal.tglAkhir;
   } else {
     link = "";
+  }
+
+  // Cek Hidden
+  if(hiddenNol.checked){
+    link += '&hidden_nol=1'
   }
   window.open(link, '_blank', 'width=1024, height=768')
 }
