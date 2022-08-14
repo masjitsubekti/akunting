@@ -39,16 +39,16 @@ class M_main extends CI_Model{
 		$this->db->update($table, $data);
 	}
 
-	public function get_kode_master_v3($awal,$clm,$table){
-        $q = $this->db->query("SELECT MAX(RIGHT($clm,3)) AS idmax FROM $table");
+	public function get_kode_master_v4($awal,$clm,$table){
+        $q = $this->db->query("SELECT MAX(RIGHT($clm,4)) AS idmax FROM $table");
         $kd = "";
         if($q->num_rows()>0){
             foreach($q->result() as $k){
                 $tmp = ((int)$k->idmax)+1;
-            	$kd = sprintf("%03s", $tmp);
+            	$kd = sprintf("%04s", $tmp);
             }
         }else{
-            $kd = "001";
+            $kd = "0001";
         }
         $kar = "$awal";
         $kodemax =  $awal.$kd;

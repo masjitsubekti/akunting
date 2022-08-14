@@ -11,10 +11,23 @@
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaster"
           aria-expanded="false" aria-controls="collapseMaster">
           <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-          Akuntansi
+          Master Data
           <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
         <div class="collapse" id="collapseMaster" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="<?= site_url('Barang') ?>">Barang</a>
+            <a class="nav-link" href="<?= site_url('Supplier') ?>">Supplier</a>
+          </nav>
+        </div>
+        <!-- Akuntansi -->
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAkuntansi"
+          aria-expanded="false" aria-controls="collapseAkuntansi">
+          <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+          Akuntansi
+          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+        </a>
+        <div class="collapse" id="collapseAkuntansi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
           <nav class="sb-sidenav-menu-nested nav">
             <a class="nav-link" href="<?= site_url('Akun') ?>">Chart Of Account</a>
             <a class="nav-link" href="<?= site_url('Jurnal') ?>">Jurnal Umum</a>
