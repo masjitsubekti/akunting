@@ -79,57 +79,40 @@
     <?php 
       $total = 0;
       if(count($report)>0){ ?>
-    <table class="table">
+    <table class="table" style="margin-top:30px;">
       <tbody class="body-table">
         <tr>
-          <td style="width:50%;"></td>
-          <td style="width:30%;"></td>
+          <td colspan="3" style="color:blue;"><b>Laba-Rugi</b></td>
+        </tr>
+        <?php foreach ($report as $row) { ?>
+        <tr>
+          <td style="width:60%; padding-left:15px;"><b><?= $row->kelompok_akun ?></b></td>
+          <td style="width:20%;"></td>
           <td style="width:20%;"></td>
         </tr>
         <?php 
-          foreach ($report as $d) {
+          $index2 = 0;
+          foreach ($row->details as $d) {
           $path = explode(">", $d->path);
-          $tree = (count($path)>1) ? (count($path)) * 15 : 15;
-          $boldheader = ($d->level==1) ? '<b>'. $d->nama .'</b>' : $d->nama;
-          $pheader = ($d->id_parent=="") ? 'padding-top:15px;' : '';
+          $tree = (count($path)>1) ? (count($path)+1) * 15 : 30;
         ?>
         <tr>
-          <td style="padding-left:<?= $tree ?>px; <?= $pheader ?>">
-            <?= $boldheader ?>
+          <td style="padding-left:<?= $tree ?>px;"><?= $d->nama ?></td>
+          <td class="text-right"><?= ($d->is_det==0) ? format_number($d->total) : '' ?></td>
+          <td class="text-right"><?= ($d->is_det==1) ? format_number($d->total) : '' ?></td>
+        </tr>
+        <?php 
+          $index2++;
+        } ?>
+        <tr>
+          <td></td>
+          <td class="text-right"><b>Total <?= $d->kelompok_akun ?> : &nbsp;</b></td>
+          <td
+            style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
+            0
           </td>
-          <td class="text-right" style="<?= $pheader ?>"><?= ($d->is_det==0) ? '<b>'.format_number($d->total).'</b>' : '' ?></td>
-          <td class="text-right" style="<?= $pheader ?>"><?= ($d->is_det==1) ? format_number($d->total) : '' ?></td>
         </tr>
         <?php } ?>
-        <tr>
-          <td colspan="3">&nbsp;</td>
-        </tr>
-        <tr style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
-          <td class="text-right" colspan="2">
-            <b>Total Laba Kotor : &nbsp;</b>
-          </td>
-          <td>
-            0
-          </td>
-        </tr>
-        <tr style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
-          <td class="text-right" colspan="2"><b>Total Laba Bersih Sebelum Pajak : &nbsp;</b></td>
-          <td>
-            0
-          </td>
-        </tr>
-        <tr style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
-          <td class="text-right" colspan="2"><b>Total Beban Pajak (25% Laba Bersih) : &nbsp;</b></td>
-          <td>
-            0
-          </td>
-        </tr>
-        <tr style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
-          <td class="text-right" colspan="2"><b>Total Laba Bersih Setelah Pajak : &nbsp;</b></td>
-          <td>
-            0
-          </td>
-        </tr>
       </tbody>
     </table>
     <?php }else{ ?>

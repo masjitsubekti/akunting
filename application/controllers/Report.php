@@ -144,7 +144,8 @@ class Report extends CI_Controller {
       );
     }
 
-    $data['report'] = $result;
+    // $data['report'] = $result;
+    $data['report'] = $report;
 
     // echo json_encode($result);
     $this->load->library('pdf');
