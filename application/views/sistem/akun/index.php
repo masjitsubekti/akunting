@@ -36,9 +36,9 @@
 </div>
 
 <!-- DATA SORT -->
-<input type="hidden" name="hidden_id_th" id="hidden_id_th" value="#column_created">
+<input type="hidden" name="hidden_id_th" id="hidden_id_th" value="#column_kode">
 <input type="hidden" name="hidden_page" id="hidden_page" value="1">
-<input type="hidden" name="hidden_column_name" id="hidden_column_name" value="created_at">
-<input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="desc">
+<input type="hidden" name="hidden_column_name" id="hidden_column_name" value="kode">
+<input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="asc">
 <div id="div_modal"></div>
 <script src="<?= base_url('assets/js/pages/akun.js') ?>"></script>

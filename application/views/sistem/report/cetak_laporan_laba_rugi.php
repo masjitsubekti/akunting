@@ -97,7 +97,7 @@
           <td style="padding-left:<?= $tree ?>px; <?= $pheader ?>">
             <?= $boldheader ?>
           </td>
-          <td class="text-right" style="<?= $pheader ?>"><?= ($d->is_det==0) ? '<b>'.format_number($d->total).'</b>' : '' ?></td>
+          <td class="text-right" style="<?= $pheader ?>"><?= ($d->is_det==0 && $d->id_parent!="") ? '<b>'.format_number($d->total).'</b>' : '' ?></td>
           <td class="text-right" style="<?= $pheader ?>"><?= ($d->is_det==1) ? format_number($d->total) : '' ?></td>
         </tr>
         <?php } ?>
@@ -109,25 +109,25 @@
             <b>Total Laba Kotor : &nbsp;</b>
           </td>
           <td>
-            0
+            <?= format_number($laba_kotor) ?>
           </td>
         </tr>
         <tr style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
           <td class="text-right" colspan="2"><b>Total Laba Bersih Sebelum Pajak : &nbsp;</b></td>
           <td>
-            0
+            <?= format_number($laba_bersih) ?>
           </td>
         </tr>
         <tr style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
           <td class="text-right" colspan="2"><b>Total Beban Pajak (25% Laba Bersih) : &nbsp;</b></td>
           <td>
-            0
+            <?= format_number($beban_pajak) ?>
           </td>
         </tr>
         <tr style="text-align: right; border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid #ffffff;">
           <td class="text-right" colspan="2"><b>Total Laba Bersih Setelah Pajak : &nbsp;</b></td>
           <td>
-            0
+            <?= format_number($laba_bersih_pajak) ?>
           </td>
         </tr>
       </tbody>

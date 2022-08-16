@@ -2,7 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('Asia/Jakarta');
 class Report extends CI_Controller {
+
   private $nama_menu  = "Laporan";
+  private $kelompokHPP  = "HARGA POKOK PENJUALAN";
+  private $grupPendapatan  = "PENDAPATAN";
+  private $grupBeban  = "BEBAN";
   public function __construct()
   {
     parent::__construct();
@@ -102,50 +106,47 @@ class Report extends CI_Controller {
     $data['tanggal_awal'] = $tanggal_awal;
     $data['tanggal_akhir'] = $tanggal_akhir;
     
-    $group = array();
-    // Group
+    /**
+     * Akun yang ada pada laporan laba rugi : akun pendapatan dan beban
+     * Rumus 
+     * Laba kotor = pendapatan - HPP (Harga pokok penjualan)
+     * Laba bersih = laba kotor - beban 
+     */
+    $totalPendapatan = 0;
+    $totalHPP = 0;
+    $totalBeban = 0;
+    $totalBebanSelainHPP = 0;
+    $labaKotor = 0;
     foreach ($report as $row) {
-      $key = $row->kelompok_akun;
-      $group [$key][] = $row;
-    }
-
-    // Set child
-    $result = array();
-    foreach ($group as $key => $value) {
-      // $saldo_awal = 0;
-      // $total_debet = 0;
-      // $total_kredit = 0;
-      $details = array();
-      // $saldo_awal = (count($value)>0) ? $value[0]->saldo_awal : 0;
-      for ($i=0; $i<count($value); $i++) {
-        // $total_debet += $value[$i]->debet;
-        // $total_kredit += $value[$i]->kredit;
-        
-        $details [] = (object) array(
-          "grup" => $value[$i]->grup,
-          "kelompok_neraca" =>  $value[$i]->kelompok_neraca,
-          "kelompok_akun" =>  $value[$i]->kelompok_akun,
-          "kode" =>  $value[$i]->kode,
-          "id" => $value[$i]->id,
-          "nama" => $value[$i]->nama,
-          "id_parent" => $value[$i]->id_parent,
-          "total" => $value[$i]->total,
-          "path" => $value[$i]->path,
-          "is_det" => $value[$i]->is_det
-        );
+      $kel = $row->kelompok_akun;
+      $grup = $row->grup;
+      // Pendapatan
+      if(strtoupper($grup)==$this->grupPendapatan){
+        $totalPendapatan += ($row->is_det==1) ? $row->total : 0;
       }
       
-      $result [] = (object) array(
-        "kelompok_akun" => $key, 
-        // "saldo_awal" => $saldo_awal, 
-        // "total_debet" => $total_debet, 
-        // "total_kredit" => $total_kredit, 
-        "details" => $details, 
-      );
+      // HPP
+      if(strtoupper($kel)==$this->kelompokHPP){
+        $totalHPP += ($row->is_det==1) ? $row->total : 0;
+      }
+
+      // Beban
+      if(strtoupper($grup)==$this->grupBeban){
+        $totalBeban += ($row->is_det==1) ? $row->total : 0;
+      }
     }
 
-    // $data['report'] = $result;
+    $totalBebanSelainHPP = $totalBeban - $totalHPP;
+    $labaKotor = $totalPendapatan + $totalHPP;
+    $labaBersih = $labaKotor + $totalBebanSelainHPP;
+    $bebanPajak = $labaBersih*25/100;
+    $labaBersihPajak = $labaBersih - $bebanPajak;
+
     $data['report'] = $report;
+    $data['laba_kotor'] = $labaKotor;
+    $data['laba_bersih'] = $labaBersih;
+    $data['beban_pajak'] = $bebanPajak;
+    $data['laba_bersih_pajak'] = $labaBersihPajak;
 
     // echo json_encode($result);
     $this->load->library('pdf');
@@ -163,7 +164,7 @@ class Report extends CI_Controller {
       'tanggal_awal' => format_date($tanggal_awal, 'Y-m-d'),
       'tanggal_akhir' => format_date($tanggal_akhir, 'Y-m-d'),
       'nomor_akun' => ($this->input->get("nomor_akun")!="") ? $this->input->get("nomor_akun") : "",
-      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "1",
+      'hidden_nol' => ($this->input->get("hidden_nol")!="") ? $this->input->get("hidden_nol") : "0",
     );
 
     $report = $this->Report_m->get_report_neraca_saldo($filter)->result();

@@ -64,8 +64,11 @@
       function get_akun_tree($q)
       {   
           $query = $this->db->query(" 
-              SELECT * FROM vw_akun_tree
-              WHERE CONCAT(kode, nama, kelompok_akun) LIKE '%$q%'
+              SELECT a.*, (
+                SELECT COUNT(*) AS jml FROM acc_akun
+                WHERE STATUS = '1' AND id_parent = a.id
+              )have_child FROM vw_akun_tree a
+              WHERE CONCAT(a.kode, a.nama, a.kelompok_akun) LIKE '%$q%'
           ");
           return $query;
       }
