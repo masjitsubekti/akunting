@@ -17,6 +17,12 @@
         $this->db->update($this->table, $data, $where);
       }
 
+      function get_by_id($id)
+      {   
+        $this->db->where('id', $id);
+        return $this->db->get($this->table)->row_array();
+      }
+
       function get_list_count($filter)
       { 
           $key = $filter['q'];
@@ -45,14 +51,6 @@
           $q .= " order by $sortby $sorttype limit $limit offset $offset";
 
           $query = $this->db->query($q);
-          return $query;
-      }
-
-      function get_by_id($id)
-      {   
-          $query = $this->db->query("
-              SELECT * FROM m_jenis_barang WHERE id = '$id'
-          ");
           return $query;
       }
     }

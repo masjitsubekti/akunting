@@ -11,12 +11,18 @@
 
       public function save($data)
       {
-        $this->db->insert($this->table, $data);
+          $this->db->insert($this->table, $data);
       }
       
       public function update($data, $where)
       {
-        $this->db->update($this->table, $data, $where);
+          $this->db->update($this->table, $data, $where);
+      }
+
+      function get_by_id($id)
+      {   
+          $query = $this->db->query(" SELECT * FROM m_supplier WHERE id = '$id'");
+          return $query;
       }
 
       function get_list_count($filter)
@@ -47,14 +53,6 @@
           $q .= " order by $sortby $sorttype limit $limit offset $offset";
 
           $query = $this->db->query($q);
-          return $query;
-      }
-
-      function get_by_id($id)
-      {   
-          $query = $this->db->query("
-              SELECT * FROM m_supplier WHERE id = '$id'
-          ");
           return $query;
       }
     }

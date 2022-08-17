@@ -1,20 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 date_default_timezone_set('Asia/Jakarta');
-class Supplier extends CI_Controller {
-  private $nama_menu  = "Supplier";     
+class Pelanggan extends CI_Controller {
+  private $nama_menu  = "Pelanggan";     
   public function __construct()
   {
     parent::__construct();
     $this->load->model('M_main');
-    $this->load->model('Supplier_m');
+    $this->load->model('Pelanggan_m');
     must_login();
   }
   
   public function index()
   {
-    $data['title'] = 'Supplier | Akunting';
-    $data['content'] = "supplier/index.php";    
+    $data['title'] = 'Pelanggan | Akunting';
+    $data['content'] = "pelanggan/index.php";    
     $this->parser->parse('sistem/template', $data);
   }
   
@@ -34,30 +34,30 @@ class Supplier extends CI_Controller {
     
     $page              = array();
     $page['limit']     = $limit;
-    $page['count_row'] = $this->Supplier_m->get_list_count($filter)['jml'];
+    $page['count_row'] = $this->Pelanggan_m->get_list_count($filter)['jml'];
     $page['current']   = $pg;
     $page['list']      = gen_paging($page);
     $data['paging']    = $page;
-    $data['list']      = $this->Supplier_m->get_list_data($filter);
+    $data['list']      = $this->Pelanggan_m->get_list_data($filter);
  
-    $this->load->view('sistem/supplier/list_data',$data);
+    $this->load->view('sistem/pelanggan/list_data',$data);
   }
 
   public function load_modal(){
     $id = $this->input->post('id');
-    $data['kode'] = $this->M_main->get_kode_master_v4('SP', 'kode', 'm_supplier');
+    $data['kode'] = $this->M_main->get_kode_master_v4('CS', 'kode', 'm_pelanggan');
     if ($id!=""){
         $data['mode'] = "UPDATE";
-        $data['data'] =  $this->M_main->get_where('m_supplier','id',$id)->row_array();
+        $data['data'] =  $this->M_main->get_where('m_pelanggan','id',$id)->row_array();
     }else{
         $data['mode'] = "ADD";
     }
-    $this->load->view('sistem/supplier/form_modal',$data);
+    $this->load->view('sistem/pelanggan/form_modal',$data);
   }
 
   public function save(){
     $id = $this->input->post('id');
-    $kode = $this->M_main->get_kode_master_v4('SP', 'kode', 'm_supplier');
+    $kode = $this->M_main->get_kode_master_v4('CS', 'kode', 'm_pelanggan');
     $nama = strip_tags(trim($this->input->post('nama')));
     $no_telp = strip_tags(trim($this->input->post('no_telp')));
     $alamat = strip_tags(trim($this->input->post('alamat')));
@@ -73,7 +73,7 @@ class Supplier extends CI_Controller {
             'updated_at'=>date('Y-m-d H:i:s')
         );
     
-        $this->Supplier_m->update($data_object, array(
+        $this->Pelanggan_m->update($data_object, array(
           'id' => $id
         )); 
 
@@ -92,7 +92,7 @@ class Supplier extends CI_Controller {
             'status'=>'1',
             'created_at'=>date('Y-m-d H:i:s')
         );
-        $this->Supplier_m->save($data_object);//insert untuk menambahkan data
+        $this->Pelanggan_m->save($data_object);//insert untuk menambahkan data
         $response['success'] = TRUE;
         $response['message'] = "Data Berhasil Disimpan";
     }
@@ -106,7 +106,7 @@ class Supplier extends CI_Controller {
         'updated_at'=>date('Y-m-d H:i:s')
       );
 
-      $this->Supplier_m->update($object, array(
+      $this->Pelanggan_m->update($object, array(
         'id' => $id
       )); 
       
@@ -118,7 +118,6 @@ class Supplier extends CI_Controller {
     }
     echo json_encode($response);
   }
-
 }
 
-/* End of file Supplier.php */
+/* End of file Pelanggan.php */

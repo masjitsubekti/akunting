@@ -1,34 +1,36 @@
 <?php 
     defined('BASEPATH') OR exit('No direct script access allowed');
-    class Satuan_m extends CI_Model {
-      private $table = 'm_satuan';
+    class Pelanggan_m extends CI_Model {
+      private $table = 'm_pelanggan';
       private $column_map = array(
+        'kode' => 'kode',
         'nama' => 'nama',
+        'alamat' => 'alamat',
         'created_at' => 'created_at',
       );
 
       public function save($data)
       {
-        $this->db->insert($this->table, $data);
+          $this->db->insert($this->table, $data);
       }
       
       public function update($data, $where)
       {
-        $this->db->update($this->table, $data, $where);
+          $this->db->update($this->table, $data, $where);
       }
 
       function get_by_id($id)
       {   
-        $this->db->where('id', $id);
-        return $this->db->get($this->table)->row_array();
+          $query = $this->db->query(" SELECT * FROM m_pelanggan WHERE id = '$id'");
+          return $query;
       }
 
       function get_list_count($filter)
       { 
           $key = $filter['q'];
           $q = "
-            SELECT count(*) as jml FROM m_satuan 
-            WHERE concat(nama) like '%$key%' and status = '1' ";
+            SELECT count(*) as jml FROM m_pelanggan
+            WHERE concat(kode, nama, keterangan) like '%$key%' and status = '1' ";
           
           $query = $this->db->query($q)->row_array();
           return $query;
@@ -44,8 +46,8 @@
           $sortby = $this->column_map[$sortby];
 
           $q = "
-              SELECT * FROM m_satuan
-              WHERE concat(nama) like '%$key%' and status = '1'
+              SELECT * FROM m_pelanggan
+              WHERE concat(kode, nama, keterangan) like '%$key%' and status = '1'
           ";
 
           $q .= " order by $sortby $sorttype limit $limit offset $offset";
