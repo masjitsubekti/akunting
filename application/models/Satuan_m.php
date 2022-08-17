@@ -23,6 +23,12 @@
         return $this->db->get($this->table)->row_array();
       }
 
+      function get_all()
+      {   
+        $this->db->where('status', '1');
+        return $this->db->get($this->table)->result();
+      }
+
       function get_list_count($filter)
       { 
           $key = $filter['q'];
