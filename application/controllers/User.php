@@ -1,15 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+date_default_timezone_set('Asia/Jakarta');
 class User extends CI_Controller {
-
     private $nama_menu  = "User";     
-
     public function __construct()
     {
         parent::__construct();
-        $this->apl = get_apl();
-        $this->load->model('Menu_m');
+        // $this->apl = get_apl();
         $this->load->model('M_main');
         $this->load->model('User_m');
         must_login();
@@ -17,18 +14,7 @@ class User extends CI_Controller {
     
     public function index()
     {
-        $this->Menu_m->role_has_access($this->nama_menu);
-
-        $data['app'] = $this->apl;
-        $data['nama_menu'] = $this->nama_menu;
-        $data['title'] = $this->nama_menu." | ".$this->apl['nama_sistem'];
-
-        // Breadcrumbs
-        $this->mybreadcrumb->add('Beranda', site_url('Beranda'));
-        $this->mybreadcrumb->add($this->nama_menu, site_url('User'));
-        $data['breadcrumbs'] = $this->mybreadcrumb->render();
-        // End Breadcrumbs
- 
+        $data['title'] = 'User | Akunting';
         $data['content'] = "user/index.php";
         $this->parser->parse('sistem/template', $data);
     }    
@@ -86,7 +72,6 @@ class User extends CI_Controller {
               $response['message'] = "Maaf, Email Sudah Terdaftar !"; 
             }else{
               $id = $this->uuid->v4(false);
-              date_default_timezone_set('Asia/Jakarta');
               $data_object = array(
                   'id' => $id, 
                   'nama'=>$nama,
@@ -103,7 +88,6 @@ class User extends CI_Controller {
               $response['message'] = "Data User Berhasil Disimpan";
             }
         }else{
-            date_default_timezone_set('Asia/Jakarta');
             if($password==""){
               $us =  $this->M_main->get_where('users', 'id', $id_user)->row_array();
               $password = $us['password'];

@@ -75,7 +75,8 @@
         </a>
         <div class="collapse" id="collapsePengaturan" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="javascript:;">User</a>
+            <a class="nav-link" href="<?= site_url('User') ?>">User</a>
+            <a class="nav-link" href="javascript:;">Default Akun</a>
           </nav>
         </div>
   </nav>

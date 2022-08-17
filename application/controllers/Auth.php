@@ -56,7 +56,7 @@ class Auth extends CI_Controller {
               $this->session->set_userdata( $ses_array );
           
               $response['success'] = true;
-              $response['message'] = "Selamat Datang ".$data_login[0]->nama." !";
+              $response['message'] = "Login berhasil !";
               $response['page'] = '/Home';
             }else{
               //Akun Anda user salah

@@ -13,10 +13,49 @@
       <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
         aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-        <li><a class="dropdown-item" href="#!">Profil</a></li>
+        <li><a class="dropdown-item" href="javascript:;">Profil</a></li>
         <li><hr class="dropdown-divider" /></li>
-        <li><a class="dropdown-item" href="#!">Logout</a></li>
+        <li><a class="dropdown-item" onclick="logout()" href="javascript:;">Logout</a></li>
       </ul>
     </li>
   </ul>
 </nav>
+<script>
+  function logout() {
+    Swal.fire({
+        title: 'Keluar dari sistem ?',
+        text: "Apakah Anda yakin keluar dari sistem !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Logout',
+        cancelButtonText: 'Batal',
+        showLoaderOnConfirm: true,
+        preConfirm: function () {
+            return new Promise(function (resolve) {
+                $.ajax({
+                    method: 'POST',
+                    dataType: 'json',
+                    url: '<?= site_url() ?>' + '/Auth/logout',
+                    success: function (data) {
+                        if (data.success == true) {
+                            Swal.fire('Berhasil',data.message,'success');
+                            swal.hideLoading()
+                            setTimeout(function(){ 
+                              window.location.href = '<?= site_url() ?>/' + data.page;
+                            }, 1000);
+                        } else {
+                            Swal.fire({icon: 'error',title: 'Oops...',text: data.message});
+                        }
+                    },
+                    fail: function (e) {
+                        alert(e);
+                    }
+                });
+            });
+        },
+        allowOutsideClick: false
+    });
+  }
+</script>

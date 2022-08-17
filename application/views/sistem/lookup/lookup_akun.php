@@ -43,7 +43,7 @@
         <input type="hidden" name="lookup_akun_sort" id="lookup_akun_sort" value="asc"> -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>

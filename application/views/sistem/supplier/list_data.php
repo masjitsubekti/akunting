@@ -8,7 +8,7 @@
     <thead class="tr-head">
       <tr>
         <th width="3%" class="text-center">No. </th>
-        <th width="10%" class="sortable" id="column_kode" data-sort="" onclick="sort_table('#column_kode','kode')">Kode </th>
+        <th width="10%" class="text-center sortable" id="column_kode" data-sort="" onclick="sort_table('#column_kode','kode')">Kode </th>
         <th width="35%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','nama')">Nama </th>
         <th width="15%">No Telp</th>
         <th width="20%">Alamat</th>

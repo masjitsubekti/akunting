@@ -18,7 +18,7 @@
         <th width="15%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','nama')">Nama </th>
         <th width="15%" class="sortable" id="column_username" data-sort="" onclick="sort_table('#column_username','username')">Username </th>
         <th width="15%" class="sortable" id="column_email" data-sort="" onclick="sort_table('#column_email','email')">Email </th>
-        <th width="15%" class="sortable" id="column_role" data-sort="" onclick="sort_table('#column_role','r.nama')">Role </th>
+        <th width="15%" class="text-center sortable" id="column_role" data-sort="" onclick="sort_table('#column_role','r.nama')">Role </th>
         <th class="text-center" width="10%">Status </th>
         <th class="text-center" width="10%">Aksi</th>
       </tr>
@@ -33,16 +33,16 @@
             <td><?= $row->nama ?></td>
             <td><?= $row->username ?></td>
             <td><?= $row->email ?></td>
-            <td><?= $row->nama_role ?></td>
+            <td class="text-center"><?= $row->nama_role ?></td>
             <td class="text-center">
               <?php 
               $status = $row->status;
               if($status=='1'){ ?>
-                <span class="badge badge-pill badge-success">Aktif</span>
+                <span class="badge bg-success">Aktif</span>
               <?php }else if($status=='2'){ ?>
-                <span class="badge badge-pill badge-warning">Belum Diverifikasi</span>
+                <span class="badge bg-warning">Belum Diverifikasi</span>
               <?php }else if($status=='3'){ ?>
-                <span class="badge badge-pill badge-danger">Diblokir</span>
+                <span class="badge bg-danger">Diblokir</span>
               <?php } ?>
             </td>
             <td class="text-center">
