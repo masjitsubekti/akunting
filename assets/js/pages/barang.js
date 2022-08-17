@@ -51,40 +51,6 @@ function sort_table(id, column) {
 	pageLoad(1);
 }
 
-$("#btn-create").on("click", function () {
-	$.ajax({
-		url: site_url + "/Barang/load_modal",
-		type: "POST",
-		data: {},
-		dataType: "html",
-		beforeSend: function () {},
-		success: function (result) {
-			$("#div_modal").html(result);
-			$("#modeform").val("ADD");
-			$("#modal-title").text("Tambah Barang");
-			$("#form-modal").modal("show");
-		},
-	});
-});
-
-$(document).on("click", ".btn-edit", function (event) {
-	event.preventDefault();
-	var id = $(this).attr("data-id");
-	$.ajax({
-		url: site_url + "/Barang/load_modal",
-		type: "POST",
-		dataType: "html",
-		data: { id: id },
-		beforeSend: function () {},
-		success: function (result) {
-			$("#div_modal").html(result);
-			$("#modeform").val("UPDATE");
-			$("#modal-title").text("Edit Barang");
-			$("#form-modal").modal("show");
-		},
-	});
-});
-
 $(document).on("click", ".btn-delete", function (e) {
 	var id = $(this).attr("data-id");
 	var title = $(this).attr("data-name");

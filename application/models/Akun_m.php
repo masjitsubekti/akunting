@@ -26,6 +26,23 @@
                 ->get('acc_kelompok_akun');
         return $query->result();
       }
+
+      function get_all($id_kelompok="")
+      {
+        $q = "
+            SELECT id, kode, nama FROM acc_akun 
+            WHERE status = '1'
+        ";
+
+        if($id_kelompok!=""){
+            $q .= " and id_kelompok = '$id_kelompok' ";
+        }
+
+        $q .= " order by kode asc ";
+        
+        $query = $this->db->query($q);
+        return $query->result();
+      }
       
       function get_list_count($key="")
       { 

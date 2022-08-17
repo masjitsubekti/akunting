@@ -51,7 +51,7 @@
           $sortby = $this->column_map[$sortby];
 
           $q = "
-              SELECT b.*, jp.nama AS jenis_produk, s.nama AS nama_satuan FROM m_barang b
+              SELECT b.*, jp.nama AS jenis_barang, s.nama AS nama_satuan FROM m_barang b
               LEFT JOIN m_jenis_barang jp ON b.id_jenis = jp.id 
               LEFT JOIN m_satuan s ON b.id_satuan = s.id
               WHERE CONCAT(b.kode, b.nama, jp.nama, s.nama, b.keterangan) LIKE '%$key%' 

@@ -42,9 +42,4 @@
 <input type="hidden" name="hidden_column_name" id="hidden_column_name" value="created_at">
 <input type="hidden" name="hidden_sort_type" id="hidden_sort_type" value="desc">
 <div id="div_modal"></div>
-<script>
-  $('.date-picker').datepicker({
-    autoclose: true,
-  }) 
-</script>
 <script src="<?= base_url('assets/js/pages/barang.js') ?>"></script>

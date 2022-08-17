@@ -9,9 +9,9 @@
       <tr>
         <th width="3%" class="text-center">No. </th>
         <th width="10%" class="text-center sortable" id="column_kode" data-sort="" onclick="sort_table('#column_kode','kode')">Kode </th>
-        <th width="20%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','nama')">Nama </th>
-        <th width="10%" class="sortable" id="column_jenis" data-sort="" onclick="sort_table('#column_jenis','jenis_barang')">Jenis Barang </th>
-        <th width="10%" class="sortable" id="column_satuan" data-sort="" onclick="sort_table('#column_satuan','satuan')">Satuan </th>
+        <th width="30%" class="sortable" id="column_nama" data-sort="" onclick="sort_table('#column_nama','nama')">Nama </th>
+        <th width="15%" class="sortable" id="column_jenis" data-sort="" onclick="sort_table('#column_jenis','jenis_barang')">Jenis Barang </th>
+        <th width="10%" class="text-center sortable" id="column_satuan" data-sort="" onclick="sort_table('#column_satuan','satuan')">Satuan </th>
         <th width="10%" class="text-center">Stok </th>
         <th class="text-center" width="10%">Aksi</th>
       </tr>
@@ -26,10 +26,10 @@
             <td class="text-center"><?= $row->kode ?></td>
             <td><?= $row->nama ?></td>
             <td><?= $row->jenis_barang ?></td>
-            <td><?= $row->nama_satuan ?></td>
-            <td><?= $row->stok ?></td>
+            <td class="text-center"><?= $row->nama_satuan ?></td>
+            <td class="text-center"><?= $row->stok ?></td>
             <td class="text-center">
-              <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Jurnal"><i style="color:#fff;" class="fa fa-edit"></i></a>
+              <a href="<?= site_url('Barang/edit/'.$row->id) ?>" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Jurnal"><i style="color:#fff;" class="fa fa-edit"></i></a>
               <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-danger btn-delete" data-toggle="tooltip" title="Hapus Jurnal"><i class="fa fa-trash"></i></a>	    
             </td>
           </tr>

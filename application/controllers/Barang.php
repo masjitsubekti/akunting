@@ -10,6 +10,7 @@ class Barang extends CI_Controller {
     $this->load->model('Barang_m');
     $this->load->model('Satuan_m');
     $this->load->model('Jenis_barang_m');
+    $this->load->model('Akun_m');
     must_login();
   }
   
@@ -24,6 +25,7 @@ class Barang extends CI_Controller {
     $data['title'] = 'Tambah Barang | Akunting';
     $data['jenis_barang'] = $this->Jenis_barang_m->get_all();
     $data['satuan'] = $this->Satuan_m->get_all();
+    $data['akun_persediaan'] = $this->Akun_m->get_all('3'); // akun persediaan
     $data['content'] = "barang/form.php";    
     $this->parser->parse('sistem/template', $data);
   }
@@ -32,6 +34,7 @@ class Barang extends CI_Controller {
     $data['title'] = 'Edit Barang | Akunting';
     $data['jenis_barang'] = $this->Jenis_barang_m->get_all();
     $data['satuan'] = $this->Satuan_m->get_all();
+    $data['akun_persediaan'] = $this->Akun_m->get_all('3'); // akun persediaan
     $data['data'] = $this->Barang_m->get_by_id($id)->row_array();
     $data['content'] = "barang/form.php";    
     $this->parser->parse('sistem/template', $data);
@@ -66,9 +69,9 @@ class Barang extends CI_Controller {
     $id = $this->input->post('id');
     $kode = $this->M_main->get_kode_master_v7('B', 'kode', 'm_barang');
     $nama = strip_tags(trim($this->input->post('nama')));
-    $id_jenis = strip_tags(trim($this->input->post('id_jenis')));
-    $id_satuan = strip_tags(trim($this->input->post('id_satuan')));
-    $id_akun_persediaan = strip_tags(trim($this->input->post('id_akun_persediaan')));
+    $id_jenis = strip_tags(trim($this->input->post('jenis_barang')));
+    $id_satuan = strip_tags(trim($this->input->post('satuan')));
+    $id_akun_persediaan = strip_tags(trim($this->input->post('akun_persediaan')));
     $harga_jual = strip_tags(trim($this->input->post('harga_jual')));
     $harga_beli = strip_tags(trim($this->input->post('harga_beli')));
     $stok = strip_tags(trim($this->input->post('stok')));

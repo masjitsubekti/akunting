@@ -10,16 +10,6 @@
           <input type="hidden" name="modeform" id="modeform">
           <input type="hidden" class="form-control" id="id" name="id"
             value="<?= isset($data) ? $data['id'] : '' ?>"></input>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group mb-2">
-                  <label for="kode" class="form-label">Kode*</label>
-                  <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode"
-                    value="<?= isset($data) ? $data['kode'] : '' ?>" required>
-                </div>
-
-              </div>
-            </div>
           <div class="form-group mb-2">
             <label for="nama" class="form-label">Nama*</label>
             <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
@@ -66,31 +56,42 @@
           <div class="row">
             <div class="col-md-6">
               <div class="form-group mb-2">
-                <label for="harga_jual" class="form-label">Harga Jual</label>
+                <label for="harga_jual" class="form-label">Harga Jual*</label>
                 <input type="text" class="form-control" id="harga_jual" name="harga_jual" placeholder="Harga Jual"
-                  value="<?= isset($data) ? $data['harga_jual'] : '' ?>" required>
+                  value="<?= isset($data) ? floatval($data['harga_jual']) : '' ?>" required>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group mb-2">
-                <label for="harga_beli" class="form-label">Harga Beli</label>
+                <label for="harga_beli" class="form-label">Harga Beli*</label>
                 <input type="text" class="form-control" id="harga_beli" name="harga_beli" placeholder="Harga Beli"
-                  value="<?= isset($data) ? $data['harga_beli'] : '' ?>" required>
+                  value="<?= isset($data) ? floatval($data['harga_beli']) : '' ?>" required>
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-6">
-              <div class="form-group mb-2">
+              <div class="form-group mb-2" id="select-persediaan">
                 <label for="akun_persediaan" class="form-label">Akun Persediaan</label>
-                <input type="text" class="form-control" id="akun_persediaan" name="akun_persediaan" placeholder="Akun Persediaan"
-                  value="<?= isset($data) ? $data['id_akun_persediaan'] : '' ?>" required>
+                <select class="form-control" name="akun_persediaan" id="akun_persediaan">
+                  <option value="">Pilih Akun Persediaan</option>
+                  <?php foreach ($akun_persediaan as $ap){ ?>
+                  <option <?php 
+                    if(isset($data)){
+                      if($data['id_akun_persediaan'] == $ap->id){
+                          echo 'selected';
+                      }
+                    }
+                ?> value="<?= $ap->id ?>"><?= $ap->kode; ?> - <?= $ap->nama; ?>
+                  </option>
+                  <?php } ?>
+                </select>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group mb-2">
                 <label for="stok" class="form-label">Stok</label>
-                <input type="text" class="form-control" id="stok" name="stok" placeholder="Stok"
+                <input type="number" class="form-control" id="stok" name="stok" placeholder="Stok"
                   value="<?= isset($data) ? $data['stok'] : '' ?>" required>
               </div>
             </div>
@@ -103,7 +104,7 @@
 
           <hr>
           <div class="float-end">
-            <a class="btn btn-secondary" href="<?= site_url('Akun') ?>"> Batal</a>
+            <a class="btn btn-secondary" href="javascript:history.go(-1);"> Batal</a>
             <button class="btn btn-primary" type="submit"> Simpan</button>
           </div>
         </form>
@@ -112,10 +113,22 @@
   </div>
 </div>
 <script>
-$("#kelompok_akun").select2({
+$("#jenis_barang").select2({
   placeholder: "Pilih Kelompok Akun",
   allowClear: true,
-  dropdownParent: $("#select-kelompok")
+  dropdownParent: $("#select-jenis")
+});
+
+$("#satuan").select2({
+  placeholder: "Pilih Satuan",
+  allowClear: true,
+  dropdownParent: $("#select-satuan")
+});
+
+$("#akun_persediaan").select2({
+  placeholder: "Pilih Akun Persediaan",
+  allowClear: true,
+  dropdownParent: $("#select-persediaan")
 });
 
 $(document).on('submit', '#formdata', function(event) {
