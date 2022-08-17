@@ -41,7 +41,11 @@
       {   
           $sortby = $this->column_map[$column];
           $query = $this->db->query("
-              SELECT a.*, ka.nama AS nama_kelompok_akun FROM acc_akun a
+              SELECT a.*, ka.nama AS nama_kelompok_akun,
+              (
+                SELECT COUNT(*) AS jml FROM acc_akun
+                WHERE STATUS = '1' AND id_parent = a.id
+              )have_child FROM acc_akun a
               LEFT JOIN acc_kelompok_akun ka ON a.id_kelompok = ka.id 
               WHERE concat(a.kode, a.nama, ka.nama) like '%$key%' and status = '1'
               order by $sortby $sort

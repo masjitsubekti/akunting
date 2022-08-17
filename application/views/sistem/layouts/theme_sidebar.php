@@ -18,6 +18,8 @@
           <nav class="sb-sidenav-menu-nested nav">
             <a class="nav-link" href="<?= site_url('Barang') ?>">Barang</a>
             <a class="nav-link" href="<?= site_url('Supplier') ?>">Supplier</a>
+            <a class="nav-link" href="<?= site_url('Jenis_barang') ?>">Jenis Barang</a>
+            <a class="nav-link" href="<?= site_url('Satuan') ?>">Satuan</a>
           </nav>
         </div>
         <!-- Akuntansi -->

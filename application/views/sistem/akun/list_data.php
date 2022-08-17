@@ -10,8 +10,13 @@
     }
     $no++;
 ?>
+<style>
+  .akun-parent {
+    background-color:#dedede;
+  }
+</style>
 <div class="table-responsive">
-  <table class="table table-bordered">
+  <table class="table table-stripped" style="border:1px solid #dedede;">
     <thead class="tr-head">
       <tr>
         <th width="3%" class="text-center">No. </th>
@@ -26,14 +31,16 @@
         if($list->num_rows()!=0){
         $no=($paging['current']-1)*$paging['limit']; 
         foreach ($list->result() as $row) { $no++; ?>
-          <tr>
+          <tr class="<?= ($row->have_child!=0) ? 'akun-parent' : '' ?>">
             <td class="text-center"><?= $no ?>.</td>
             <td><?= $row->nama ?></td>
             <td><?= $row->kode ?></td>
             <td><?= $row->nama_kelompok_akun ?></td>
             <td class="text-center">
               <a href="<?= site_url('Akun/edit/'.$row->id) ?>" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Tipe Hafalan"><i style="color:#fff;" class="fa fa-edit"></i></a>
-              <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-danger btn-delete" data-toggle="tooltip" title="Hapus Tipe Hafalan"><i class="fa fa-trash"></i></a>	    
+              <?php if($row->have_child==0){ ?>
+                <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nama?>" class="btn btn-sm btn-danger btn-delete" data-toggle="tooltip" title="Hapus Tipe Hafalan"><i class="fa fa-trash"></i></a>	    
+              <?php } ?>
             </td>
           </tr>
         <?php 
