@@ -32,8 +32,9 @@
         </a>
         <div class="collapse" id="collapseAkuntansi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
           <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="<?= site_url('Jurnal') ?>">Jurnal</a>
+            <a class="nav-link" href="javascript:;">Posting Jurnal</a>
             <a class="nav-link" href="<?= site_url('Akun') ?>">Chart Of Account</a>
-            <a class="nav-link" href="<?= site_url('Jurnal') ?>">Jurnal Umum</a>
           </nav>
         </div>
         <!-- Transaksi -->

@@ -128,7 +128,8 @@ class Akun extends CI_Controller {
    */
 
   public function lookup_akun(){
-    $this->load->view('sistem/lookup/lookup_akun');
+    $data['select_all'] = $this->input->post('select_all');
+    $this->load->view('sistem/lookup/lookup_akun', $data);
   }
 
   public function get_data_lookup(){
@@ -155,6 +156,7 @@ class Akun extends CI_Controller {
   public function get_akun_tree(){
     $key	  = ($this->input->get("q") != "") ? strtoupper(quotes_to_entities($this->input->get("q"))) : "";
     $data['list']      = $this->Akun_m->get_akun_tree($key);
+    $data['select_all'] = $this->input->get("select_all");
     $this->load->view('sistem/lookup/data_akun_tree', $data);
   }
 }

@@ -92,6 +92,9 @@ function lookupAkun() {
   $.ajax({
     url: "<?= site_url('Akun/lookup_akun/')?>",
     type: 'post',
+    data:{
+      select_all : true
+    },
     dataType: 'html',
     beforeSend: function() {},
     success: function(result) {

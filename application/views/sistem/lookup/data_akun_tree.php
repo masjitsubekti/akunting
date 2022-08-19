@@ -26,8 +26,9 @@
             <td class="text-center"><?= $row->kode ?></td>
             <td><?= $row->kelompok_akun ?></td>
             <td class="text-center">
-              <a class="btn btn-sm btn-success" href="javascript:;" onclick='selectRowAkun(<?php echo json_encode($row) ?>)'><i class="fa fa-check"></i></a>
-              <?php if($row->have_child==0){ ?>
+              <?php 
+              if($row->have_child==0 || ($select_all=='true' && $select_all==true)){ ?>
+                <a class="btn btn-sm btn-success" href="javascript:;" onclick='selectRowAkun(<?php echo json_encode($row) ?>)'><i class="fa fa-check"></i></a>
               <?php } ?>
             </td>
           </tr>
