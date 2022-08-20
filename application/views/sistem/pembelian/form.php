@@ -326,18 +326,18 @@ function formatNumber(val) {
     Number(Math.abs(parseInt(val))).toLocaleString()
 }
 
-$(document).on('submit', '#formData', function(event) {
+$(document).on('submit', '#formdata', function(event) {
   event.preventDefault();
   const modeform = $('#modeform').val();
-  let url = (modeform == 'ADD') ? '/barang-masuk/save' : '/barang-masuk/update';
+  let url = (modeform == 'ADD') ? '/pembelian/save' : '/pembelian/update';
 
   $("#loading").addClass("fa fa-spinner fa-spin");
   $('#btn-save').prop('disabled', true)
   $.ajax({
-    url: base_url + url,
+    url: site_url + url,
     method: 'POST',
     dataType: 'json',
-    data: new FormData($('#formData')[0]),
+    data: new FormData($('#formdata')[0]),
     async: true,
     processData: false,
     contentType: false,
@@ -351,7 +351,7 @@ $(document).on('submit', '#formData', function(event) {
 
           $("#loading").removeClass("fa fa-spinner fa-spin");
           $('#btn-save').prop('disabled', false)
-          window.location.href = "{{ url('/barang-masuk') }}";
+          window.location.href = site_url + '/Pembelian';
         }, 1000);
       } else {
         $("#loading").removeClass("fa fa-spinner fa-spin");

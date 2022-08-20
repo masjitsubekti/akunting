@@ -71,33 +71,32 @@ class Pembelian extends CI_Controller {
       $tanggal = $this->input->post('tanggal');
       $tanggal = format_date($tanggal, 'Y-m-d');
       $keterangan = $this->input->post('keterangan');
+      $pembayaran = $this->input->post('pembayaran');
+      $id_supplier = $this->input->post('id_supplier');
+      $id_user = $this->session->userdata("auth_id_user");
 
       // Details
-      $akun = $this->input->post('akun');
-      $uraian = $this->input->post('ket');
-      $debet = $this->input->post('debet');
-      $kredit = $this->input->post('kredit');
-
-      if(isset($akun)){
-        $jml = count($akun);
+      $barang = $this->input->post('barang');
+      $qty = $this->input->post('qty');
+      $harga = $this->input->post('harga');
+      $ppn = $this->input->post('ppn');
+      
+      if(isset($barang)){
+        $jml = count($barang);
         
         $id = $this->uuid->v4(false);
         $details = array();
         $total = 0;
         for ($i=0; $i < $jml; $i++) {
           // Sum Total
-          $t_debet = ($debet[$i]!="") ? $debet[$i] : 0;
-          $total += $t_debet;
+          $total = 0;
           $details[] = array(
-              'id'         => $this->uuid->v4(false),
-              'id_jurnal'  => $id,
-              'id_akun'    => $akun[$i], 
-              'akun_kb'    => 0,
-              'debet'      => ($debet[$i]!="") ? $debet[$i] : 0,
-              'kredit'     => ($kredit[$i]!="") ? $kredit[$i] : 0,
-              'keterangan' => $uraian[$i],
-              'rate'       => 1,
-              'urut'       => $i+1,
+              'id'           => $this->uuid->v4(false),
+              'id_pembelian' => $id,
+              'id_barang'    => $barang[$i], 
+              'jumlah'       => $qty,
+              'harga'        => ($harga[$i]!="") ? $harga[$i] : 0,
+              'ppn'          => ($ppn[$i]!="") ? $ppn[$i] : 0,
           );
         }
 
@@ -105,11 +104,12 @@ class Pembelian extends CI_Controller {
           'id'=>$id,
           'nomor'=>$no_transaksi,
           'tanggal'=>$tanggal,
-          'id_kelompok_jurnal'=>1, //Jurnal Umum
-          'keterangan'=>$keterangan,
+          'id_supplier'=>$id_supplier,
           'total'=>$total,
-          'multi_currency'=>1,
+          'keterangan'=>$keterangan,
+          'pembayaran'=>$pembayaran,
           'status'=>'1',
+          'created_by'=>$id_user,
           'created_at'=>date('Y-m-d H:i:s')
         );
         
@@ -133,51 +133,53 @@ class Pembelian extends CI_Controller {
     $tanggal = $this->input->post('tanggal');
     $tanggal = format_date($tanggal, 'Y-m-d');
     $keterangan = $this->input->post('keterangan');
+    $pembayaran = $this->input->post('pembayaran');
+    $id_supplier = $this->input->post('id_supplier');
+    $id_user = $this->session->userdata("auth_id_user");
 
     // Details
-    $id_jurnal_detail = $this->input->post('id_jurnal_detail');
-    $akun = $this->input->post('akun');
-    $uraian = $this->input->post('ket');
-    $debet = $this->input->post('debet');
-    $kredit = $this->input->post('kredit');
+    $id_pembelian_detail = $this->input->post('id_pembelian_detail');
+    $barang = $this->input->post('barang');
+    $qty = $this->input->post('qty');
+    $harga = $this->input->post('harga');
+    $ppn = $this->input->post('ppn');
 
-    if(isset($akun)){
-      $jml = count($akun);
+    if(isset($barang)){
+      $jml = count($barang);
       
       $details = array();
       $total = 0;
       for ($i=0; $i < $jml; $i++) {
         // Sum Total
-        $t_debet = ($debet[$i]!="") ? $debet[$i] : 0;
-        $total += $t_debet;
+        $total = 0;
         $details[] = array(
-            'id'         => ($id_jurnal_detail[$i]!="") ? $id_jurnal_detail[$i] : $this->uuid->v4(false),
-            'id_jurnal'  => $id,
-            'id_akun'    => $akun[$i], 
-            'akun_kb'    => 0,
-            'debet'      => ($debet[$i]!="") ? $debet[$i] : 0,
-            'kredit'     => ($kredit[$i]!="") ? $kredit[$i] : 0,
-            'keterangan' => $uraian[$i],
-            'rate'       => 1,
-            'urut'       => $i+1,
+            'id'           => ($id_pembelian_detail[$i]!="") ? $id_pembelian_detail[$i] : $this->uuid->v4(false),
+            'id_pembelian' => $id,
+            'id_barang'    => $barang[$i], 
+            'jumlah'       => $qty,
+            'harga'        => ($harga[$i]!="") ? $harga[$i] : 0,
+            'ppn'          => ($ppn[$i]!="") ? $ppn[$i] : 0,
         );
       }
 
       $data_object = array(
         'tanggal'=>$tanggal,
+        'id_supplier'=>$id_supplier,
         'keterangan'=>$keterangan,
+        'pembayaran'=>$pembayaran,
         'total'=>$total,
+        'updated_by'=>$id_user,
         'updated_at'=>date('Y-m-d H:i:s')
       );
       
-      // Delete Jurnal Detail
-      $this->db->delete('acc_jurnal_detail', array('id_jurnal' => $id));
+      // Delete Pembelian Detail
+      $this->db->delete('pembelian_detail', array('id_pembelian' => $id));
       // Update Header
       $this->Pembelian_m->update($data_object, array(
         'id' => $id
       )); 
       // Save Detail         
-      $this->db->insert_batch('acc_jurnal_detail', $details);
+      $this->db->insert_batch('pembelian_detail', $details);
 
       $response['success'] = true;
       $response['message'] = "Data berhasil diupdate";
