@@ -145,7 +145,7 @@ class Barang extends CI_Controller {
   /**
    * Function Lookup Barang
    * Digunakan untuk menampilkan pilihan pencarian data barang
-   * 
+   * Parameter type : HPP, JUAL
    */
 
   public function lookup_barang(){

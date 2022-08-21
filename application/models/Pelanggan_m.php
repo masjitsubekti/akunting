@@ -19,6 +19,13 @@
           $this->db->update($this->table, $data, $where);
       }
 
+      function get_all()
+      {   
+        $this->db->select('id, kode, nama');
+        $this->db->where('status', '1');
+        return $this->db->get($this->table)->result();
+      }
+
       function get_by_id($id)
       {   
           $query = $this->db->query(" SELECT * FROM m_pelanggan WHERE id = '$id'");

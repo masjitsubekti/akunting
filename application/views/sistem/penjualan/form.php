@@ -15,7 +15,7 @@ input[type=number] {
   <div class="col-12">
     <div class="card mt-4 mb-4">
       <div class="card-header">
-        <span class="card-title">Form Pembelian</span>
+        <span class="card-title">Form Penjualan</span>
       </div>
       <div class="card-body">
         <form id="formData">
@@ -45,15 +45,15 @@ input[type=number] {
                           }?>" required>
                 </div>
               </div>
-              <div class="row mb-1" id="select-supplier">
-                <label for="id_supplier" class="col-sm-2 form-label">Supplier</label>
+              <div class="row mb-1" id="select-pelanggan">
+                <label for="id_pelanggan" class="col-sm-2 form-label">Pelanggan</label>
                 <div class="col-sm-7">
-                  <select class="form-control" name="id_supplier" id="id_supplier" required>
-                    <option value="">Pilih Supplier</option>
-                    <?php foreach ($supplier as $s){ ?>
+                  <select class="form-control" name="id_pelanggan" id="id_pelanggan" required>
+                    <option value="">Pilih Pelanggan</option>
+                    <?php foreach ($pelanggan as $s){ ?>
                     <option <?php 
                       if(isset($data)){
-                        if($data['id_supplier'] == $s->id){
+                        if($data['id_pelanggan'] == $s->id){
                             echo 'selected ';
                         }
                       }
@@ -115,7 +115,7 @@ input[type=number] {
                   foreach ($details as $row) { ?>
                 <tr>
                   <td style='padding-bottom:0px;'>
-                    <input type='hidden' name='id_pembelian_detail[]' class='form-control' value='<?= $row->id ?>'>
+                    <input type='hidden' name='id_penjualan_detail[]' class='form-control' value='<?= $row->id ?>'>
                     <input type='hidden' name='barang[]' class='form-control barang_hidden'
                       value='<?= $row->id_barang ?>'><b>[<?= $row->kode_barang ?>]</b> <?= $row->nama_barang ?>
                   </td>
@@ -157,7 +157,7 @@ input[type=number] {
           </div>
           <hr>
           <div class="float-end">
-            <a href="<?= site_url('Pembelian') ?>" class="btn btn-secondary">Batal</a>
+            <a href="<?= site_url('Penjualan') ?>" class="btn btn-secondary">Batal</a>
             <button id="btn-save" type="submit" class="btn btn-primary"><i id="loading" class=""></i> Simpan</button>
           </div>
         </form>
@@ -174,10 +174,10 @@ $(document).ready(function() {
   }
 })
 
-$("#id_supplier").select2({
-  placeholder: "Pilih Supplier",
+$("#id_pelanggan").select2({
+  placeholder: "Pilih Pelanggan",
   allowClear: true,
-  dropdownParent: $("#select-supplier")
+  dropdownParent: $("#select-pelanggan")
 });
 
 $('.date-picker').datepicker({
@@ -211,7 +211,7 @@ function validateRow(val) {
       const el = table.rows[i].cells[0];
       let cekInput = el.getElementsByTagName('input');
       if (cekInput.length > 0) {
-        let input = cekInput[0].value;
+        let input = cekInput[1].value;
         if (input == val) {
           result = true;
           break;
@@ -234,12 +234,12 @@ function addRows(val) {
     let jumlah = parseInt($("#jumlah-row").val()) + 1;
     let data = "<tr>" +
       "<td style='padding-bottom:0px;'>" +
-      "<input type='hidden' name='id_pembelian_detail[]' class='form-control' value=''>" +
+      "<input type='hidden' name='id_penjualan_detail[]' class='form-control' value=''>" +
       "<input type='hidden' name='barang[]' class='form-control barang_hidden' value='" + val.id + "'>" + "<b>[" + val.kode + "]</b> " + val.nama + "</td>" +
       "<td style='padding:0px;'><input type='number' name='qty[]' class='form-control text-end qty' placeholder='0' value='1' required></td>" +
-      "<td style='padding:0px;'><input type='number' name='harga[]' class='form-control text-end harga' value='" + parseFloat(val.harga_beli) + "' placeholder='0' required></td>" +
+      "<td style='padding:0px;'><input type='number' name='harga[]' class='form-control text-end harga' value='" + parseFloat(val.harga_jual) + "' placeholder='0' required></td>" +
       "<td style='padding:0px;'><input type='number' name='ppn[]' class='form-control text-end ppn' placeholder='0'></td>" +
-      "<td style='padding-bottom:0px;' class='text-end'><input type='hidden' class='form-control sub_total_hidden' value='" + parseFloat(val.harga_beli) + "'> <span class='sub_total'>" + formatNumber(val.harga_beli) + "</span></td>" +
+      "<td style='padding-bottom:0px;' class='text-end'><input type='hidden' class='form-control sub_total_hidden' value='" + parseFloat(val.harga_jual) + "'> <span class='sub_total'>" + formatNumber(val.harga_jual) + "</span></td>" +
       "<td style='padding:0px;' class='text-center'><a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i class='fa fa-times-circle'></i></a></td>" +
       "</tr>";
     $('#dataTableTransaksi').append(data);
@@ -330,7 +330,7 @@ function formatNumber(val) {
 $(document).on('submit', '#formData', function(event) {
   event.preventDefault();
   const modeform = $('#modeform').val();
-  let url = (modeform == 'ADD') ? '/Pembelian/save' : '/Pembelian/update';
+  let url = (modeform == 'ADD') ? '/Penjualan/save' : '/Penjualan/update';
 
   $("#loading").addClass("fa fa-spinner fa-spin");
   $('#btn-save').prop('disabled', true)
@@ -352,7 +352,7 @@ $(document).on('submit', '#formData', function(event) {
 
           $("#loading").removeClass("fa fa-spinner fa-spin");
           $('#btn-save').prop('disabled', false)
-          window.location.href = site_url + '/Pembelian';
+          // window.location.href = site_url + '/Penjualan';
         }, 1000);
       } else {
         $("#loading").removeClass("fa fa-spinner fa-spin");
