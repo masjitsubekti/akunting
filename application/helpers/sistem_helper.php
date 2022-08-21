@@ -195,6 +195,10 @@ function format_number($angka){
 }
 
 function format_date($date, $format="d-m-Y"){
+  if($date==""){
+    return "";
+  }
+
   $time = strtotime($date);
   return date($format, $time);
 }
