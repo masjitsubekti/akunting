@@ -87,16 +87,21 @@ class Pembelian extends CI_Controller {
         $id = $this->uuid->v4(false);
         $details = array();
         $total = 0;
+        $pajak = 0;
         for ($i=0; $i < $jml; $i++) {
           // Sum Total
-          $total = 0;
+          $t_qty = ($qty[$i]!="") ? $qty[$i] : 0;
+          $t_harga = ($harga[$i]!="") ? $harga[$i] : 0;
+          $t_ppn = ($ppn[$i]!="") ? $ppn[$i] : 0;
+          $pajak = ($t_qty*$t_harga) * $t_ppn/100;
+          $total += ($t_qty*$t_harga) + $pajak;
           $details[] = array(
               'id'           => $this->uuid->v4(false),
               'id_pembelian' => $id,
               'id_barang'    => $barang[$i], 
-              'jumlah'       => $qty,
-              'harga'        => ($harga[$i]!="") ? $harga[$i] : 0,
-              'ppn'          => ($ppn[$i]!="") ? $ppn[$i] : 0,
+              'qty'          => $t_qty,
+              'harga'        => $t_harga,
+              'ppn'          => $t_ppn,
           );
         }
 
@@ -149,16 +154,21 @@ class Pembelian extends CI_Controller {
       
       $details = array();
       $total = 0;
+      $pajak = 0;
       for ($i=0; $i < $jml; $i++) {
         // Sum Total
-        $total = 0;
+        $t_qty = ($qty[$i]!="") ? $qty[$i] : 0;
+        $t_harga = ($harga[$i]!="") ? $harga[$i] : 0;
+        $t_ppn = ($ppn[$i]!="") ? $ppn[$i] : 0;
+        $pajak = ($t_qty*$t_harga) * $t_ppn/100;
+        $total += ($t_qty*$t_harga) + $pajak;
         $details[] = array(
             'id'           => ($id_pembelian_detail[$i]!="") ? $id_pembelian_detail[$i] : $this->uuid->v4(false),
             'id_pembelian' => $id,
             'id_barang'    => $barang[$i], 
-            'jumlah'       => $qty,
-            'harga'        => ($harga[$i]!="") ? $harga[$i] : 0,
-            'ppn'          => ($ppn[$i]!="") ? $ppn[$i] : 0,
+            'qty'          => $t_qty,
+            'harga'        => $t_harga,
+            'ppn'          => $t_ppn,
         );
       }
 

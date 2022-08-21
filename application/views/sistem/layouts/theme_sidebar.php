@@ -46,8 +46,8 @@
         </a>
         <div class="collapse" id="collapseTransaksi" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="javascript:;">Penjualan</a>
             <a class="nav-link" href="<?= site_url('Pembelian') ?>">Pembelian</a>
+            <a class="nav-link" href="javascript:;">Penjualan</a>
           </nav>
         </div>
         <!-- Laporan -->

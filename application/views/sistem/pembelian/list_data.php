@@ -36,7 +36,7 @@
             <td><?= $row->keterangan ?></td>
             <td class="text-end"><?= rupiah($row->total, "") ?></td>
             <td class="text-center">
-              <a href="<?= site_url('Jurnal/edit/'.$row->id) ?>" data-id="<?=$row->id?>" data-name="<?=$row->nomor?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Jurnal"><i style="color:#fff;" class="fa fa-edit"></i></a>
+              <a href="<?= site_url('Pembelian/edit/'.$row->id) ?>" data-id="<?=$row->id?>" data-name="<?=$row->nomor?>" class="btn btn-sm btn-warning btn-edit" data-toggle="tooltip" title="Edit Jurnal"><i style="color:#fff;" class="fa fa-edit"></i></a>
               <a href="javascript:;" data-id="<?=$row->id?>" data-name="<?=$row->nomor?>" class="btn btn-sm btn-danger btn-delete" data-toggle="tooltip" title="Hapus Jurnal"><i class="fa fa-trash"></i></a>	    
             </td>
           </tr>

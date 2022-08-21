@@ -46,9 +46,9 @@ input[type=number] {
                 </div>
               </div>
               <div class="row mb-1" id="select-supplier">
-                <label for="supplier" class="col-sm-2 form-label">Supplier</label>
+                <label for="id_supplier" class="col-sm-2 form-label">Supplier</label>
                 <div class="col-sm-7">
-                  <select class="form-control" name="supplier" id="supplier" required>
+                  <select class="form-control" name="id_supplier" id="id_supplier" required>
                     <option value="">Pilih Supplier</option>
                     <?php foreach ($supplier as $s){ ?>
                     <option <?php 
@@ -74,14 +74,24 @@ input[type=number] {
             <div class="col-md-2 text-right">
               <span>Pembayaran : </span>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                <label class="form-check-label" for="flexRadioDefault1">
+                <input class="form-check-input" type="radio" name="pembayaran" id="radioTunai" value="TUNAI"
+                  <?php if(isset($data)) {
+                    echo ($data['pembayaran']=='TUNAI') ? ' checked' : '';
+                  }else{
+                    echo ' checked';
+                  } ?>
+                >
+                <label class="form-check-label" for="radioTunai">
                   Tunai
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                <label class="form-check-label" for="flexRadioDefault2">
+                <input class="form-check-input" type="radio" name="pembayaran" id="radioKredit" value="KREDIT"
+                  <?php if(isset($data)) {
+                    echo ($data['pembayaran']=='KREDIT') ? ' checked' : '';
+                  } ?>
+                >
+                <label class="form-check-label" for="radioKredit">
                   Kredit
                 </label>
               </div>
@@ -92,10 +102,10 @@ input[type=number] {
             <h6>Rincian Transaksi</h6>
             <table class="table table-bordered" id="dataTableTransaksi" style="border:1px solid #ddd; font-size:15px;">
               <thead class="tr-head">
-                <th class="text-center" style="width:15%;">Nama Barang </th>
+                <th class="text-center" style="width:20%;">Nama Barang </th>
                 <th class="text-center" style="width:5%;">Jumlah </th>
                 <th class="text-center" style="width:10%;">Harga </th>
-                <th class="text-center" style="width:10%;">Pajak </th>
+                <th class="text-center" style="width:5%;">Pajak (%) </th>
                 <th class="text-center" style="width:10%;">Total </th>
                 <th class="text-center" style="width:5%;" class="text-center">Aksi </th>
               </thead>
@@ -104,24 +114,27 @@ input[type=number] {
                 <?php if (isset($details)) {
                   foreach ($details as $row) { ?>
                 <tr>
-                  <td>
-                    <input type='hidden' name='id_jurnal_detail[]' class='form-control' value='<?= $row->id ?>'>
-                    <input type='hidden' name='akun[]' class='form-control'
-                      value='<?= $row->id_akun ?>'><b>[<?= $row->kode_akun ?>] </b><?= $row->nama_akun ?>
+                  <td style='padding-bottom:0px;'>
+                    <input type='hidden' name='id_pembelian_detail[]' class='form-control' value='<?= $row->id ?>'>
+                    <input type='hidden' name='barang[]' class='form-control barang_hidden'
+                      value='<?= $row->id_barang ?>'><b>[<?= $row->kode_barang ?>]</b> <?= $row->nama_barang ?>
                   </td>
                   <td style='padding:0px;'>
-                    <input type='text' name='ket[]' class='form-control ket' autocomplete='off' placeholder='Keterangan'
-                      value="<?= $row->keterangan ?>" required>
+                    <input type='number' name='qty[]' class='form-control text-end qty' placeholder='0'
+                      value='<?= $row->qty ?>' required>
                   </td>
                   <td style='padding:0px;'>
-                    <input type='number' name='debet[]' class='form-control text-end debet' placeholder='0'
-                      value='<?= floatval($row->debet) ?>'>
+                    <input type='number' name='harga[]' class='form-control text-end harga'
+                      value='<?= floatval($row->harga) ?>' placeholder='0' required>
                   </td>
                   <td style='padding:0px;'>
-                    <input type='number' name='kredit[]' class='form-control text-end kredit' placeholder='0'
-                      value='<?= floatval($row->kredit) ?>'>
+                    <input type='number' name='ppn[]' class='form-control text-end ppn'
+                      value="<?= floatval($row->ppn) ?>" placeholder='0'>
                   </td>
-                  <td style='padding:0px; vertical-align:middle;' class='text-center'>
+                  <td style='padding-bottom:0px;' class='text-end'>
+                    <input type='hidden' class='form-control sub_total_hidden' value=''> <span class='sub_total'></span>
+                  </td>
+                  <td style='padding:0px;' class='text-center'>
                     <a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i
                         class='fa fa-times-circle'></i></a>
                   </td>
@@ -131,19 +144,20 @@ input[type=number] {
               <tbody>
                 <tr style="border-top: 2px solid #ddd;">
                   <td class="text-center">
-                    <a href="javascript:;" onclick="addRows()" class="btn btn-success"><i
-                        class="fa fa-plus-circle"></i> Tambah</a>
+                    <a href="javascript:;" onclick="lookupBarang()" class="btn btn-success"><i
+                        class="fa fa-plus-circle"></i>
+                      Tambah</a>
                   </td>
                   <td colspan="3" class="text-end"><b>Total</b></td>
-                  <td></td>
+                  <td class="text-end"><b><span class="grand_total">0</span></b></td>
                 </tr>
               </tbody>
             </table>
-            <input type="text" id="jumlah-row" value="<?= (isset($details)) ?  count($details) : 0 ?>">
+            <input type="hidden" id="jumlah-row" value="<?= (isset($details)) ?  count($details) : 0 ?>">
           </div>
           <hr>
           <div class="float-end">
-            <a href="<?= site_url('jurnal') ?>" class="btn btn-secondary">Batal</a>
+            <a href="<?= site_url('Pembelian') ?>" class="btn btn-secondary">Batal</a>
             <button id="btn-save" type="submit" class="btn btn-primary"><i id="loading" class=""></i> Simpan</button>
           </div>
         </form>
@@ -151,7 +165,7 @@ input[type=number] {
     </div>
   </div>
 </div>
-<div id="div_modal_lookup_akun"></div>
+<div id="div_modal_lookup_barang"></div>
 <script>
 $(document).ready(function() {
   const modeform = $('#modeform').val()
@@ -160,7 +174,7 @@ $(document).ready(function() {
   }
 })
 
-$("#supplier").select2({
+$("#id_supplier").select2({
   placeholder: "Pilih Supplier",
   allowClear: true,
   dropdownParent: $("#select-supplier")
@@ -174,19 +188,19 @@ function selectRow(payload) {
   addRows(payload)
 }
 
-$('#btn-add').on('click', function() {
+function lookupBarang() {
   $.ajax({
-    url: base_url + "/lookup-barang",
+    url: site_url + "/Barang/lookup_barang",
     type: 'GET',
     data: {},
     dataType: 'html',
     beforeSend: function() {},
     success: function(result) {
-      $('#div_modal').html(result);
-      $('#lookup_barang').modal('show');
+      $('#div_modal_lookup_barang').html(result);
+      $('#modal_lookup_barang').modal('show');
     }
   });
-});
+}
 
 function validateRow(val) {
   let table = document.getElementById("dataTableTransaksi");
@@ -208,14 +222,8 @@ function validateRow(val) {
   return result;
 }
 
-function addRows(val={
-  id_barang : 1,
-  kode : '567',
-  nama : 'Laptop',
-  harga_beli : 1000000,
-}) {
-  // let found = validateRow(val.id_barang);
-  let found = false
+function addRows(val) {
+  let found = validateRow(val.id);
   if (found) {
     Swal.fire({
       icon: 'warning',
@@ -225,18 +233,19 @@ function addRows(val={
   } else {
     let jumlah = parseInt($("#jumlah-row").val()) + 1;
     let data = "<tr>" +
-      "<td><input type='text' name='barang[]' class='form-control form-control-sm barang_hidden' value='" + val
-      .id_barang + "'>" + "<b>[" + val.kode + "]</b> " + val.nama + "</td>" +
-      "<td><input type='number' name='qty[]' class='form-control form-control-sm qty' placeholder='0' required></td>" +
-      "<td><input type='number' name='harga[]' class='form-control form-control-sm harga' value='" + val.harga_beli +
-      "' placeholder='0' required></td>" +
-      "<td><input type='number' name='diskon[]' class='form-control form-control-sm diskon' placeholder='0'></td>" +
-      "<td class='text-right'><input type='text' class='form-control form-control-sm sub_total_hidden'> <span class='sub_total'></span></td>" +
-      "<td class='text-center'><a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i class='fa fa-times-circle'></i></a></td>" +
+      "<td style='padding-bottom:0px;'>" +
+      "<input type='hidden' name='id_pembelian_detail[]' class='form-control' value=''>" +
+      "<input type='hidden' name='barang[]' class='form-control barang_hidden' value='" + val.id + "'>" + "<b>[" + val.kode + "]</b> " + val.nama + "</td>" +
+      "<td style='padding:0px;'><input type='number' name='qty[]' class='form-control text-end qty' placeholder='0' value='1' required></td>" +
+      "<td style='padding:0px;'><input type='number' name='harga[]' class='form-control text-end harga' value='" + parseFloat(val.harga_beli) + "' placeholder='0' required></td>" +
+      "<td style='padding:0px;'><input type='number' name='ppn[]' class='form-control text-end ppn' placeholder='0'></td>" +
+      "<td style='padding-bottom:0px;' class='text-end'><input type='hidden' class='form-control sub_total_hidden' value='" + parseFloat(val.harga_beli) + "'> <span class='sub_total'>" + formatNumber(val.harga_beli) + "</span></td>" +
+      "<td style='padding:0px;' class='text-center'><a href='javascript:;' onclick='deleteRow(this)' class='btn btn-sm btn-danger'><i class='fa fa-times-circle'></i></a></td>" +
       "</tr>";
     $('#dataTableTransaksi').append(data);
     $("#jumlah-row").val(jumlah);
-    $('#lookup_barang').modal('hide');
+    $('#modal_lookup_barang').modal('hide');
+    calculateGrandTotal()
   }
 }
 
@@ -253,8 +262,9 @@ $(document).on('input', ".qty", function() {
   const self = $(this);
   let qty = parseInt($(this).val() || 0);
   let harga = parseFloat($(this).parents('tr').find(".harga").val() || 0);
-  let diskon = parseFloat($(this).parents('tr').find(".diskon").val() || 0);
-  let total = (qty * harga) - diskon;
+  let ppn = parseFloat($(this).parents('tr').find(".ppn").val() || 0);
+  let pajak = (qty * harga) * ppn / 100;
+  let total = (qty * harga) + pajak;
   $(this).parents('tr').find(".sub_total_hidden").val(total);
   $(this).parents('tr').find(".sub_total").text(formatNumber(total));
   calculateGrandTotal()
@@ -264,19 +274,21 @@ $(document).on('input', ".harga", function() {
   const self = $(this);
   let harga = parseInt($(this).val() || 0);
   let qty = parseFloat($(this).parents('tr').find(".qty").val() || 0);
-  let diskon = parseFloat($(this).parents('tr').find(".diskon").val() || 0);
-  let total = (qty * harga) - diskon;
+  let ppn = parseFloat($(this).parents('tr').find(".ppn").val() || 0);
+  let pajak = (qty * harga) * ppn / 100;
+  let total = (qty * harga) + pajak;
   $(this).parents('tr').find(".sub_total_hidden").val(total);
   $(this).parents('tr').find(".sub_total").text(formatNumber(total));
   calculateGrandTotal()
 });
 
-$(document).on('input', ".diskon", function() {
+$(document).on('input', ".ppn", function() {
   const self = $(this);
-  let diskon = parseInt($(this).val() || 0);
+  let ppn = parseInt($(this).val() || 0);
   let qty = parseFloat($(this).parents('tr').find(".qty").val() || 0);
   let harga = parseFloat($(this).parents('tr').find(".harga").val() || 0);
-  let total = (qty * harga) - diskon;
+  let pajak = (qty * harga) * ppn / 100;
+  let total = (qty * harga) + pajak;
   $(this).parents('tr').find(".sub_total_hidden").val(total);
   $(this).parents('tr').find(".sub_total").text(formatNumber(total));
   calculateGrandTotal()
@@ -286,8 +298,9 @@ function loadTotal() {
   $("#dataTableTransaksi tr").each(function() {
     let qty = parseFloat($(this).find(".qty").val() || 0);
     let harga = parseFloat($(this).find(".harga").val() || 0);
-    let diskon = parseInt($(this).find(".diskon").val() || 0);
-    let total = (qty * harga) - diskon;
+    let ppn = parseInt($(this).find(".ppn").val() || 0);
+    let pajak = (qty * harga) * ppn / 100;
+    let total = (qty * harga) + pajak;
     $(this).find(".sub_total_hidden").val(total);
     $(this).find(".sub_total").text(formatNumber(total));
   });
@@ -296,14 +309,6 @@ function loadTotal() {
 
 function calculateGrandTotal() {
   var total = 0;
-  var diskon = 0;
-  $(".diskon").each(function() {
-    var value = $(this).val();
-    if (!isNaN(value) && value.length != 0) {
-      diskon += parseFloat(value);
-    }
-  });
-
   $(".sub_total_hidden").each(function() {
     var value = $(this).val();
     if (!isNaN(value) && value.length != 0) {
@@ -311,11 +316,7 @@ function calculateGrandTotal() {
     }
   });
 
-  let harga_total = formatNumber(total + diskon);
-  let diskon_total = formatNumber(diskon);
   let grand_total = formatNumber(total);
-  $('.harga_total').text(harga_total)
-  $('.diskon_total').text(diskon_total)
   $('.grand_total').text(grand_total)
 }
 
@@ -326,7 +327,7 @@ function formatNumber(val) {
     Number(Math.abs(parseInt(val))).toLocaleString()
 }
 
-$(document).on('submit', '#formdata', function(event) {
+$(document).on('submit', '#formData', function(event) {
   event.preventDefault();
   const modeform = $('#modeform').val();
   let url = (modeform == 'ADD') ? '/pembelian/save' : '/pembelian/update';
@@ -337,7 +338,7 @@ $(document).on('submit', '#formdata', function(event) {
     url: site_url + url,
     method: 'POST',
     dataType: 'json',
-    data: new FormData($('#formdata')[0]),
+    data: new FormData($('#formData')[0]),
     async: true,
     processData: false,
     contentType: false,

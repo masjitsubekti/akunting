@@ -140,6 +140,44 @@ class Barang extends CI_Controller {
     }
     echo json_encode($response);
   }
+
+
+  /**
+   * Function Lookup Barang
+   * Digunakan untuk menampilkan pilihan pencarian data barang
+   * 
+   */
+
+  public function lookup_barang(){
+    $this->load->view('sistem/lookup/lookup_barang');
+  }
+
+  public function fetch_data_lookup(){
+    $pg     = ($this->input->get("page") != "") ? $this->input->get("page") : 1;
+    $key	  = ($this->input->get("q") != "") ? strtoupper(quotes_to_entities($this->input->get("q"))) : "";
+    $limit	= $this->input->get("limit");
+    $funcName = $this->input->post('function_name');
+    $offset = ($limit*$pg)-$limit;
+
+    $filter = array(
+      'q' => $key,
+      'sortby' => $this->input->get("sortby"),
+      'sorttype' => $this->input->get("sorttype"),
+      'offset' => $offset,
+      'limit' => $limit,
+    );
+    
+    $page              = array();
+    $page['function_name'] = $funcName;
+    $page['limit']     = $limit;
+    $page['count_row'] = $this->Barang_m->get_list_count($filter)['jml'];
+    $page['current']   = $pg;
+    $page['list']      = gen_paging($page);
+    $data['paging']    = $page;
+    $data['list']      = $this->Barang_m->get_list_data($filter);
+ 
+    $this->load->view('sistem/lookup/data_barang',$data);
+  }
 }
 
 /* End of file Barang.php */

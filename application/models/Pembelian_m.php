@@ -84,8 +84,8 @@
       function get_pembelian_detail($id)
       {   
           $query = $this->db->query("
-              SELECT p.*, s.nama AS nama_supplier FROM pembelian_detail pd
-              LEFT JOIN pembelian p ON pd.id_akun = p.id 
+              SELECT pd.*, b.kode AS kode_barang, b.nama AS nama_barang FROM pembelian_detail pd
+              LEFT JOIN m_barang b ON pd.id_barang = b.id 
               WHERE pd.id_pembelian = '$id'
               ORDER BY pd.created_at ASC
           ");
